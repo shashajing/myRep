@@ -1,4 +1,4 @@
-package com.benison;
+package com.shashajing.benison.service;
 
 /**
  * Hello world!
