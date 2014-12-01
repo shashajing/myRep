@@ -18,11 +18,9 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.core.io.Resource;
 
 /**
- * @=======================================
- * @Description TODO
- * @author jay_liang
- * @date 2013-12-30 下午3:36:56
- * @=======================================
+ * 
+ * @author yanghanjing
+ *
  */
 public class SpringPropertyConfigurer extends PropertyPlaceholderConfigurer {
 
@@ -79,7 +77,7 @@ public class SpringPropertyConfigurer extends PropertyPlaceholderConfigurer {
 		dbInfo.put("jdbcUrl", props.getProperty("aliLibrary.db.jdbcUrl"));
 		dbInfo.put("username", props.getProperty("aliLibrary.db.username"));
 		dbInfo.put("password", props.getProperty("aliLibrary.db.password"));
-		try {
+		/*try {
 			ctxPropertiesMap = SystemBasicConfigUtil.loadPropertiesFromDB(dbInfo);
 		} catch (Exception e) {
 			log.error("从数据库加载基础信息失败，改为从配置文件加载基础信息", e);
@@ -100,10 +98,6 @@ public class SpringPropertyConfigurer extends PropertyPlaceholderConfigurer {
 				ctxPropertiesMap.put(keyStr, value);
 				System.setProperty(keyStr, value);
 			}
-		}
-	}
-
-	public static Object getContextProperty(String name) {
-		return ctxPropertiesMap.get(name);
+		}*/
 	}
 }
