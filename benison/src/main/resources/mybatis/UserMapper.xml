@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.shashajing.benison.dao.UserDao">
+
+	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
+	<select id="search" parameterType="map" resultType="User">
+		select userId, loginName, loginPassword, userName, email, tel, status
+		from user
+		<where>
+			<if test="loginName != null">
+				loginName=#{loginName}
+			</if>
+			<if test="loginPassword != null">
+				and loginPassword=#{loginPassword}
+			</if>
+			<if test="userName != null">
+				and userName=#{userName}
+			</if>
+		</where>
+	</select>
+</mapper> 
