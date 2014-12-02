@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.shashajing.benison.dao.NewsDao">
+
+	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
+	<select id="searchNews" parameterType="map" resultType="News">
+		select newsId, type, title, content, url, createTime, modifyTime, lastViewTime, viewCount
+		from news
+		<where>
+			<if test="newsId != null">
+				newsId = #{newsId}
+			</if>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			<if test="title != null">
+				and title = #{title}
+			</if>
+		</where>
+	</select>
+
+	<!-- 新增 -->
+	<insert id="addNews" parameterType="News" useGeneratedKeys="true" keyProperty="newsId">
+		insert into news (
+		type, title, content, url, createTime, modifyTime, lastViewTime, viewCount)
+		values (
+		#{type}, #{title}, #{content},#{url}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{lastViewTime,jdbcType=TIMESTAMP}, 
+		#{viewCount})
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateNews" parameterType="News">
+		update news
+		<set>
+			<if test="type != null">type=#{type},</if>
+			<if test="content != null">content=#{content},</if>
+			<if test="url != null">url=#{url},</if>
+			<if test="modifyTime != null">modifyTime=#{modifyTime},</if>
+			<if test="lastViewTime != null">lastViewTime=#{lastViewTime},</if>
+			<if test="viewCount != null">viewCount=#{viewCount}</if>
+		</set>
+		where newsId = #{newsId}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteNews" parameterType="list">
+		delete from news where newsId in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>
