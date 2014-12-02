@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.i18n.encoding" value="utf-8"></constant>
+	<!-- 允许ognl表达式访问static方法 -->
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+	<!-- 改用spring托管实例 -->
+	<constant name="struts.objectFactory" value="spring"></constant>
+	
+	<package name="user" namespace="/user" extends="struts-default">
+		<action name="user" class="userAction">
+			<result name="success">/WEB-INF/views/user.jsp</result>
+		</action>
+	</package>
+	
+	<package name="homePage" namespace="/homePage" extends="struts-default">
+		<action name="home" class="newsAction" method="goToHomePage">
+			<result name="success">/WEB-INF/views/home.jsp</result>
+		</action>
+	</package>
+</struts>
