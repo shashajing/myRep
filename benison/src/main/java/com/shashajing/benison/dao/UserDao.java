@@ -13,6 +13,6 @@ import com.shashajing.benison.entity.User;
 @MyBatisDao
 public interface UserDao {
 
-	List<User> searchUser(Map<String, Object> parameters);
+	public List<User> searchUser(Map<String, Object> parameters);
 	
 }
