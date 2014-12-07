@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="/struts-tags" prefix="s"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -30,256 +31,97 @@
  </head>
  <body>
   <div class="container">
-     <div class="main_top">
-          <div class="main_left fl span6">
-              <div class="box pr5">
-                <div class="box_border">
-                  <div class="box_top">
-                    <div class="box_top_l fl"><b class="pl15">数据统计</b></div>
-                    <div class="box_top_r fr pr15"><a href="#" class="color307fb1">更多</a></div>
-                  </div>
-                  <div class="box_center">center</div>
-                </div>
-              </div>
-          </div>
-          <div class="main_right fr span4">
-          
-              <div class="box pl5">
-                <div class="box_border">
-                  <div class="box_top">top</div>
-                  <div class="box_center">center</div>
-                </div>
-              </div>
-        
-          </div>
-
-          <div class="clear"></div>
-     </div>
-     <div class="main_center">
-        <div class="span3 fl pt10">
-          <div class="box pr5">
-          <div class="box_border">
-            <div class="box_top">top</div>
-            <div class="box_center">center</div>
-          </div>
-        </div>
-        </div>
-        <div class="span4 fl pt10">
-          <div class="box pl5 pr5">
-          <div class="box_border">
-            <div class="box_top">top</div>
-            <div class="box_center">center</div>
-          </div>
-        </div>
-        </div>
-        <div class="span3 fl pt10">
-          <div class="box pl5">
-          <div class="box_border">
-            <div class="box_top">top</div>
-            <div class="box_center">center</div>
-          </div>
-        </div>
-        </div>
-        <div class="clear"></div>
-     </div>  
-
-     <div id="button" class="mt10">
-       <input type="button" name="button" class="btn btn82 btn_add" value="新增"> 
-       <input type="button" name="button" class="btn btn82 btn_del" value="删除"> 
-       <input type="button" name="button" class="btn btn82 btn_config" value="配置"> 
-       <input type="button" name="button" class="btn btn82 btn_count" value="统计"> 
-       <input type="button" name="button" class="btn btn82 btn_checked" value="全选"> 
-       <input type="button" name="button" class="btn btn82 btn_nochecked" value="取消"> 
-       <input type="button" name="button" class="btn btn82 btn_export" value="导出">
-       <input type="button" name="button" class="btn btn82 btn_recycle" value="回收站">
-       <input type="button" name="button" class="btn btn82 btn_search" value="查询">   
-     </div>
+    
     <div id="search_bar" class="mt10">
        <div class="box">
           <div class="box_border">
-            <div class="box_top"><b class="pl15">搜索</b></div>
+            <div class="box_top"><b class="pl15">查询</b></div>
             <div class="box_center pt10 pb10">
-              <table class="form_table" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td>姓名</td>
-                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
-                  <td>性别</td>
-                  <td>
-                    <span class="fl">
-                      <div class="select_border"> 
-                        <div class="select_containers "> 
-                        <select name="" class="select"> 
-                        <option>男</option> 
-                        <option>女</option> 
-                        </select> 
-                        </div> 
-                      </div> 
-                    </span>
-                  </td>
-                  <td>姓名</td>
-                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
-                  <td>性别</td>
-                  <td>
-                    <span class="fl">
-                      <div class="select_border"> 
-                        <div class="select_containers "> 
-                        <select name="" class="select"> 
-                        <option>男</option> 
-                        <option>女</option> 
-                        </select> 
-                        </div> 
-                      </div> 
-                    </span>
-                  </td>
-                  <td>姓名</td>
-                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
-                  <td>性别</td>
-                  <td>
-                    <span class="fl">
-                      <div class="select_border"> 
-                        <div class="select_containers "> 
-                        <select name="" class="select"> 
-                        <option>男</option> 
-                        <option>女</option> 
-                        </select> 
-                        </div> 
-                      </div> 
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>姓名</td>
-                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
-                  <td>性别</td>
-                  <td>
-                    <span class="fl">
-                      <div class="select_border"> 
-                        <div class="select_containers "> 
-                        <select name="" class="select"> 
-                        <option>男</option> 
-                        <option>女</option> 
-                        </select> 
-                        </div> 
-                      </div> 
-                    </span>
-                  </td>
-                  <td>姓名</td>
-                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
-                  <td>性别</td>
-                  <td>
-                    <span class="fl">
-                      <div class="select_border"> 
-                        <div class="select_containers "> 
-                        <select name="" class="select"> 
-                        <option>男</option> 
-                        <option>女</option> 
-                        </select> 
-                        </div> 
-                      </div> 
-                    </span>
-                  </td>
-                  <td>姓名</td>
-                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
-                  <td>性别</td>
-                  <td>
-                    <span class="fl">
-                      <div class="select_border"> 
-                        <div class="select_containers "> 
-                        <select name="" class="select"> 
-                        <option>男</option> 
-                        <option>女</option> 
-                        </select> 
-                        </div> 
-                      </div> 
-                    </span>
-                  </td>
-                </tr>
-              </table>
-            </div>
-            <div class="box_bottom pb5 pt5 pr10" style="border-top:1px solid #dadada;">
-              <div class="search_bar_btn" style="text-align:right;">
-                 <input type="submit" value="确定" class="ext_btn ext_btn_submit">
-                 <input type="button" value="返回" onclick="location.href='javascript:history.go(-1)'" class="ext_btn">
-                 <input type="button" class="ext_btn ext_btn_success" value="成功">
-                 <input type="button" class="ext_btn ext_btn_error" value="错误">
-                 <a href="" class="ext_btn"><span class="add"></span>添加</a>
-              </div>
+            <form action="/benison/admin/user.action">
+	              <table class="form_table" border="0" cellpadding="0" cellspacing="0">
+	                <tr>
+	                  <td>姓名</td>
+	                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
+	                  <td>性别</td>
+	                  <td>
+	                    <span class="fl">
+	                      <div class="select_border"> 
+	                        <div class="select_containers "> 
+	                        <select name="" class="select"> 
+	                        <option>男</option> 
+	                        <option>女</option> 
+	                        </select> 
+	                        </div> 
+	                      </div> 
+	                    </span>
+	                  </td>
+	                  <td>姓名</td>
+	                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
+	                  <td>性别</td>
+	                  <td>
+	                    <span class="fl">
+	                      <div class="select_border"> 
+	                        <div class="select_containers "> 
+	                        <select name="" class="select"> 
+	                        <option>男</option> 
+	                        <option>女</option> 
+	                        </select> 
+	                        </div> 
+	                      </div> 
+	                    </span>
+	                  </td>
+	                  <td>姓名</td>
+	                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
+	                  <td>性别</td>
+	                  <td>
+	                    <span class="fl">
+	                      <div class="select_border"> 
+	                        <div class="select_containers "> 
+	                        <select name="" class="select"> 
+	                        <option>男</option> 
+	                        <option>女</option> 
+	                        </select> 
+	                        </div> 
+	                      </div> 
+	                    </span>
+	                  </td>
+	                  <td><input type="submit" name="button" class="btn btn82 btn_search" value="查询"> </td>
+	                </tr>
+	              </table>
+              </form>
             </div>
           </div>
         </div>
     </div>
+    <div id="button" class="mt10">
+       <input type="button" name="button" class="btn btn82 btn_add" value="新增"> 
+       <input type="button" name="button" class="btn btn82 btn_del" value="删除"> 
+       <input type="button" name="button" class="btn btn82 btn_checked" value="全选"> 
+       <input type="button" name="button" class="btn btn82 btn_export" value="导出">
+         
+     </div>
      <div id="table" class="mt10">
         <div class="box span10 oh">
               <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table">
                 <tr>
-                   <th width="30">#</th>
-                   <th width="100">标题</th>
-                   <th width="100">标题</th>
-                   <th>标题</th>
-                    </tr>
-                <tr class="tr">
-                   <td class="td_center"><input type="checkbox"></td>
-                   <td>aad</td>
-                   <td>aad</td>
-                   <td>aad</td>
+                   <th width="30"><input type="checkbox"></th>
+                   <th width="100">用户名</th>
+                   <th width="100">登录名</th>
+                   <th width="100">邮箱</th>
+                   <th width="100">电话</th>
+                   <th >状态</th>
+                </tr>
                 
-                 </tr>
-                 <tr class="tr"> 
-                   <td class="td_center"><input type="checkbox"></td>
-                   <td>aad</td>
-                   <td>aad</td>
-                   <td>aad</td>
-                
-                 </tr>
-                 <tr class="tr">
-                    <td class="td_center"><input type="checkbox"></td>
-                   <td>aad</td>
-                   <td>aad</td>
-                   <td>aad</td>
-                
-                 </tr>
-                 <tr class="tr">
-                    <td class="td_center"><input type="checkbox"></td>
-                   <td>aad</td>
-                   <td>aad</td>
-                   <td>aad</td>
-                
-                 </tr>
-                 <tr class="tr">
-                    <td class="td_center"><input type="checkbox"></td>
-                   <td>aad</td>
-                   <td>aad</td>
-                   <td>aad</td>
-                
-                 </tr>
-                 <tr class="tr">
-                   <td class="td_center"><input type="checkbox"></td>
-                   <td>aad</td>
-                   <td>aad</td>
-                   <td>aad</td>
-                
-                 </tr>
-                 <tr class="tr">
-                   <td class="td_center"><input type="checkbox"></td>
-                   <td>aad</td>
-                   <td>aad</td>
-                   <td>aad</td>
-                
-                 </tr>
-                 <tr class="tr">
-                   <td class="td_center"><input type="checkbox"></td>
-                   <td>aad</td>
-                   <td>aad</td>
-                   <td>aad</td>
-                
-                 </tr>
-                 <tr class="tr">
-                   <td class="td_center"><input type="checkbox"></td>
-                   <td>aad</td>
-                   <td>aad</td>
-                   <td>aad</td>
-                
-                 </tr>
+                <s:iterator value="userList">
+	                <tr class="tr">
+	                   <td class="td_center"><input type="checkbox"></td>
+	                   <td>${userName}</td>
+	                   <td>${loginName}</td>
+	                   <td>${email}</td>
+	                   <td>${tel}</td>
+	                   <td>${status}</td>
+	                </tr>
+                </s:iterator>
               
               </table>
               <div class="page mt10">
