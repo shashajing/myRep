@@ -143,16 +143,35 @@
           <div class="box_border">
             <div class="box_top"><b class="pl15">表单</b></div>
             <div class="box_center">
-              <form action="${ctx}/admin/userAdd.action" class="jqtransform">
-               <table class="form_table pt15 pb15" width="100%" border="0" cellpadding="0" cellspacing="0">
-                 <tr>
-                  <td class="td_right">输入框：</td>
-                  <td class=""> 
-                    <input type="text" name="name" class="input-text lh30" size="40">
-                  </td>
-                  <td class="td_right">输入框：</td><td><input type="text" name="name" class="input-text lh30" size="40"></td>
-                </tr>
-                <tr >
+              <form action="${ctx}/admin/user!addUser.action" class="jqtransform" method="post">
+					<table class="form_table pt15 pb15" width="100%" border="0"
+						cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="td_right">用户名：</td>
+							<td class=""><input type="text" name="user.userName"
+								class="input-text lh30" size="40"></td>
+						</tr>
+						<tr>
+							<td class="td_right">登录账号：</td>
+							<td><input type="text" name="user.loginName"
+								class="input-text lh30" size="40"></td>
+						</tr>
+						<tr>
+							<td class="td_right">登录密码：</td>
+							<td><input type="text" name="user.loginPassword"
+								class="input-text lh30" size="40"></td>
+						</tr>
+						<tr>
+							<td class="td_right">电子邮箱：</td>
+							<td><input type="text" name="user.email"
+								class="input-text lh30" size="40"></td>
+						</tr>
+						<tr>
+							<td class="td_right">联系电话：</td>
+							<td><input type="text" name="user.tel"
+								class="input-text lh30" size="40"></td>
+						</tr>
+						<tr >
                   <td class="td_right">下拉框：</td>
                   <td class="">
  
@@ -170,40 +189,16 @@
                     </span>
                   </td>
                  </tr>
-                 <tr>
-                  <td class="td_right">文本框：</td>
-                  <td class="">
-                    <textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
-                  </td>
-                 </tr>
-                 <tr>
-                  <td class="td_right">单选：</td>
-                  <td class="">
-                    <input type="radio" name="status"> 可用
-                    <input type="radio" name="status"> 不可用
-                  </td>
-                 </tr>
-                 <tr>
-                  <td class="td_right">多选：</td>
-                  <td class="">
-                    <input type="checkbox" name="check" > 1
-                    <input type="checkbox" name="check" > 2
-                    <input type="checkbox" name="check" > 3
-                  </td>
-                </tr>
-                <tr>
-                  <td class="td_right">文件：</td>
-                  <td class=""><input type="file" name="file" class="input-text lh30" size="10"></td>
-                 </tr>
-                 <tr>
-                   <td class="td_right">&nbsp;</td>
-                   <td class="">
-                     <input type="button" name="button" class="btn btn82 btn_save2" value="保存"> 
-                    <input type="button" name="button" class="btn btn82 btn_res" value="重置"> 
-                   </td>
-                 </tr>
-               </table>
-               </form>
+						
+						<tr>
+							<td class="td_right">&nbsp;</td>
+							<td class=""><input type="submit" name="button"
+								class="btn btn82 btn_save2" value="保存"> <input
+								type="button" name="button" class="btn btn82 btn_res"
+								value="重置"></td>
+						</tr>
+					</table>
+				</form>
             </div>
           </div>
         </div>

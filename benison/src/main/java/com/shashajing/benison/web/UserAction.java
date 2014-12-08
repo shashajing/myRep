@@ -36,6 +36,8 @@ public class UserAction extends ActionSupport{
 	
 	public String addUser() {
 		
+		userService.addUser(user);
+		
 		return "success";
 	}
 	

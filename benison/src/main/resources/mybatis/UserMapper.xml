@@ -6,7 +6,7 @@
 
 	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
 	<select id="searchUser" parameterType="map" resultType="User">
-		select userId, loginName, loginPassword, userName, email, tel, status
+		select userId, loginName, loginPassword, userName, email, tel, status, type,editTime,editUserName
 		from user
 		<where>
 			<if test="loginName != null">
@@ -18,6 +18,41 @@
 			<if test="userName != null">
 				and userName=#{userName}
 			</if>
+			<if test="type != null">
+				and type=#{type}
+			</if>
 		</where>
 	</select>
+	
+	<!-- 新增用户 -->
+	<insert id="addUser" parameterType="User">
+		insert into user
+		(loginName,loginPassword,userName,type,email,tel,status,editTime,editUserName)
+		values(#{loginName},#{loginPassword},#{userName},#{type,jdbcType=INTEGER}
+		,#{email,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR},#{status,jdbcType=INTEGER}
+		,#{editTime,jdbcType=TIMESTAMP},#{editUserName,jdbcType=VARCHAR});
+	</insert>
+	
+	<!-- 编辑用户 -->
+	<update id="updateUser" parameterType="User">
+		update user 
+		<set>
+			<if test="type != null">type = #{type}</if>
+			<if test="email != null">email = #{email}</if>
+			<if test="tel != null">tel = #{tel}</if>
+			<if test="status != null">status = #{status}</if>
+			<if test="editTime != null">editTime = #{editTime}</if>
+			<if test="editUserName != null">editUserName = #{editUserName}</if>
+		</set>
+		where userId = #{userId};
+	</update>
+	
+	<!-- 删除用户 -->
+	<delete id="deleteUser" parameterType="list">
+		delete from user
+		where userId in 
+		<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
 </mapper> 

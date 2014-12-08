@@ -1,5 +1,7 @@
 package com.shashajing.benison.entity;
 
+import java.util.Date;
+
 
 /**
  * 用户.
@@ -11,10 +13,14 @@ public class User {
 	private int uId;
 	private String loginName;
 	private String loginPassword;
+	private int type;	
 	private String userName;
 	private String email;
 	private String tel;
 	private int status;
+	private Date editTime;
+	private String editUserName;
+	
 	public int getuId() {
 		return uId;
 	}
@@ -56,5 +62,23 @@ public class User {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public Date getEditTime() {
+		return editTime;
+	}
+	public void setEditTime(Date editTime) {
+		this.editTime = editTime;
+	}
+	public String getEditUserName() {
+		return editUserName;
+	}
+	public void setEditUserName(String editUserName) {
+		this.editUserName = editUserName;
 	}
 }

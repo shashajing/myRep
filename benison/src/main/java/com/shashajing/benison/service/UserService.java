@@ -21,4 +21,16 @@ public class UserService {
 		return userDao.searchUser(parameters);
 	}
 
+	public int addUser(User user) {
+		return userDao.addUser(user);
+	}
+	
+	
+	public int updateUser(User user) {
+		return userDao.updateUser(user);
+	}
+	
+	public int deleteUser(List<Integer> ids) {
+		return userDao.deleteUser(ids);
+	}
 }

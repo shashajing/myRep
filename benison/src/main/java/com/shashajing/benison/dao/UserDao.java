@@ -12,7 +12,12 @@ import com.shashajing.benison.entity.User;
  */
 @MyBatisDao
 public interface UserDao {
-
-	public List<User> searchUser(Map<String, Object> parameters);
 	
+	List<User> searchUser(Map<String, Object> parameters);
+	
+	int addUser(User user);
+	
+	int updateUser(User user);
+	
+	int deleteUser(List<Integer> ids);
 }

@@ -4,6 +4,8 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
 	<constant name="struts.i18n.encoding" value="utf-8"></constant>
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" /> 
+	<constant name="struts.devMode" value="true" /> 
 	<!-- 允许ognl表达式访问static方法 -->
 	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
 	<!-- 改用spring托管实例 -->
