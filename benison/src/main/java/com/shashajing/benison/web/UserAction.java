@@ -17,6 +17,8 @@ public class UserAction extends ActionSupport{
 
 	private List<User> userList;
 	
+	private User user;
+	
 	@Autowired
 	private UserService userService;
 	
@@ -31,12 +33,25 @@ public class UserAction extends ActionSupport{
 	}
 
 
+	
+	public String addUser() {
+		
+		return "success";
+	}
+	
 
+	
+	
+	
+	
+	public User getUser() {
+		return user;
+	}
 
-	
-	
-	
-	
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public List<User> getUserList() {
 		return userList;
 	}

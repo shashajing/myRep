@@ -1,12 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+
 <html>
 <head>
    <meta charset="UTF-8">
@@ -37,7 +33,7 @@
           <div class="box_border">
             <div class="box_top"><b class="pl15">查询</b></div>
             <div class="box_center pt10 pb10">
-            <form action="/benison/admin/user.action">
+            <form action="${ctx}/admin/user.action">
 	              <table class="form_table" border="0" cellpadding="0" cellspacing="0">
 	                <tr>
 	                  <td>姓名</td>
@@ -147,7 +143,7 @@
           <div class="box_border">
             <div class="box_top"><b class="pl15">表单</b></div>
             <div class="box_center">
-              <form action="" class="jqtransform">
+              <form action="${ctx}/admin/userAdd.action" class="jqtransform">
                <table class="form_table pt15 pb15" width="100%" border="0" cellpadding="0" cellspacing="0">
                  <tr>
                   <td class="td_right">输入框：</td>
