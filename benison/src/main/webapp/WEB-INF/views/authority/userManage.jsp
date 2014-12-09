@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
@@ -28,7 +29,7 @@
  <body>
   <div class="container">
     
-    <div id="search_bar" class="mt10">
+    <div id="search_bar" class="">
        <div class="box">
           <div class="box_border">
             <div class="box_top"><b class="pl15">查询</b></div>
@@ -36,51 +37,39 @@
             <form action="${ctx}/admin/user.action">
 	              <table class="form_table" border="0" cellpadding="0" cellspacing="0">
 	                <tr>
-	                  <td>姓名</td>
-	                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
-	                  <td>性别</td>
+	                  <td>用户名</td>
+	                  <td><input type="text" name="user.userName" class="input-text lh25" size="10"></td>
+	                  <td>登录账号</td>
+	                  <td><input type="text" name="user.loginName" class="input-text lh25" size="10"></td>
+	                  <td>用户类型</td>
 	                  <td>
 	                    <span class="fl">
 	                      <div class="select_border"> 
 	                        <div class="select_containers "> 
-	                        <select name="" class="select"> 
-	                        <option>男</option> 
-	                        <option>女</option> 
+	                        <select name="user.type" class="select"> 
+	                        <option value="1">普通用户</option> 
+	                        <option value="2">管理员</option> 
 	                        </select> 
 	                        </div> 
 	                      </div> 
 	                    </span>
 	                  </td>
-	                  <td>姓名</td>
-	                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
-	                  <td>性别</td>
+	                  <td>状态</td>
 	                  <td>
 	                    <span class="fl">
 	                      <div class="select_border"> 
 	                        <div class="select_containers "> 
-	                        <select name="" class="select"> 
-	                        <option>男</option> 
-	                        <option>女</option> 
+	                        <select name="user.type" class="select"> 
+	                        <option value="1">有效</option> 
+	                        <option value="0">失效</option> 
 	                        </select> 
 	                        </div> 
 	                      </div> 
 	                    </span>
 	                  </td>
-	                  <td>姓名</td>
-	                  <td><input type="text" name="name" class="input-text lh25" size="10"></td>
-	                  <td>性别</td>
-	                  <td>
-	                    <span class="fl">
-	                      <div class="select_border"> 
-	                        <div class="select_containers "> 
-	                        <select name="" class="select"> 
-	                        <option>男</option> 
-	                        <option>女</option> 
-	                        </select> 
-	                        </div> 
-	                      </div> 
-	                    </span>
-	                  </td>
+	                  
+	                  
+	                  
 	                  <td><input type="submit" name="button" class="btn btn82 btn_search" value="查询"> </td>
 	                </tr>
 	              </table>
@@ -101,11 +90,15 @@
               <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table">
                 <tr>
                    <th width="30"><input type="checkbox"></th>
-                   <th width="100">用户名</th>
-                   <th width="100">登录名</th>
+                   <th width="100">用户名称</th>
+                   <th width="100">登录账号</th>
+                   <th width="100">用户类型</th>
                    <th width="100">邮箱</th>
                    <th width="100">电话</th>
-                   <th >状态</th>
+                   <th width="100">状态</th>
+                   <th width="130">编辑时间</th>
+                   <th width="100">操作人</th>
+                   <th >操作</th>
                 </tr>
                 
                 <s:iterator value="userList">
@@ -113,9 +106,19 @@
 	                   <td class="td_center"><input type="checkbox"></td>
 	                   <td>${userName}</td>
 	                   <td>${loginName}</td>
+	                   <td>
+		                   <s:if test="type == 1">普通用户</s:if>
+		                   <s:elseif test="type == 0">管理员</s:elseif>
+	                   </td>
 	                   <td>${email}</td>
 	                   <td>${tel}</td>
-	                   <td>${status}</td>
+	                   <td>
+		                   <s:if test="status == 1">有效</s:if>
+		                   <s:elseif test="status == 0">无效</s:elseif>
+	                   </td>
+	                   <td><fmt:formatDate value="${editTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+	                   <td>${editUserName}</td>
+	                   <td></td>
 	                </tr>
                 </s:iterator>
               

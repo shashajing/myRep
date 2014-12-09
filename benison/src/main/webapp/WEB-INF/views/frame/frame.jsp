@@ -62,6 +62,10 @@ function menuScroll(num){
     }
   }
 }
+
+
+
+
   </script>
   <title>后台首页</title>
 </head>
@@ -96,7 +100,7 @@ function menuScroll(num){
           <h3>权限管理</h3>
           <ul>
           	<li class="on">待办事宜</li>
-            <li>用户管理</li>
+            <li><a href="#" onclick="openMenu('/admin/user.action')">用户管理</a></li>
             <li>角色管理</li>
           </ul>
           <h3>前台管理</h3>
@@ -157,4 +161,14 @@ function menuScroll(num){
           <a href="javascript:;" class="next" title="使用鼠标滚轴滚动侧栏" onclick="menuScroll(2);"></a>
     </div>
 </body>
+<script type="text/javascript">
+	
+function openMenu(url) {
+	url = "${ctx}" + url
+	$("#rightMain").attr("src",url);
+}
+
+
+</script>
+  
 </html>
