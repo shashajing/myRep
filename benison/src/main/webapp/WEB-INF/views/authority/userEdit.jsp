@@ -12,96 +12,23 @@
    <script type="text/javascript" src="../static/admin/js/jquery.min.js"></script>
    <script type="text/javascript" src="../static/admin/js/colResizable-1.3.min.js"></script>
    <script type="text/javascript" src="../static/admin/js/common.js"></script>
+   
+   <script type="text/javascript">
+      $(function(){  
+        $(".list_table").colResizable({
+          liveDrag:true,
+          gripInnerHtml:"<div class='grip'></div>", 
+          draggingClass:"dragging", 
+          minWidth:30
+        }); 
+        
+      }); 
+   </script>
    <title>Document</title>
-   <style type="text/css">
-	.hidden{display:none;}
-	#www_zzjs_net{width:498px; height:100px;padding:4px 10px 10px;background-color:#FFFFFF;border:1px solid #05549d;color:#333333;line-height:24px;text-align:left;-webkit-box-shadow:5px 2px 6px #000;-moz-box-shadow:3px 3px 6px #555;}
-   </style>
-
-<script type="text/javascript">
-	//判断浏览器ie6创建的div样式和非ie6创建的div样式
-	//创建div
-	function showUserEditDiv(idname,displayFlag) {
-		var div = document.getElementById(idname);
-		if(displayFlag == 0){
-			div.style.display = "none";
-		} else {
-			div.style.display = "block";
-		}
-	}
-</script>
-</head>
+ </head>
  <body>
   <div class="container">
     
-    <div id="edtiDiv" class="mt10" style="display:none;">
-        <div class="box">
-          <div class="box_border">
-            <div class="box_top"><b class="pl15">表单</b></div>
-            <div class="box_center">
-						<form action="${ctx}/admin/user!addUser.action"
-							class="jqtransform" method="post">
-							<table class="form_table pt15 pb15" width="100%" border="0"
-								cellpadding="0" cellspacing="0">
-								<tr>
-									<td class="td_right">用户名：</td>
-									<td class=""><input type="text" name="user.userName"
-										class="input-text lh30" size="40"></td>
-								</tr>
-								<tr>
-									<td class="td_right">登录账号：</td>
-									<td><input type="text" name="user.loginName"
-										class="input-text lh30" size="40"></td>
-								</tr>
-								<tr>
-									<td class="td_right">登录密码：</td>
-									<td><input type="text" name="user.loginPassword"
-										class="input-text lh30" size="40"></td>
-								</tr>
-								<tr>
-									<td class="td_right">电子邮箱：</td>
-									<td><input type="text" name="user.email"
-										class="input-text lh30" size="40"></td>
-								</tr>
-								<tr>
-									<td class="td_right">联系电话：</td>
-									<td><input type="text" name="user.tel"
-										class="input-text lh30" size="40"></td>
-								</tr>
-								<tr>
-									<td class="td_right">下拉框：</td>
-									<td class=""><span class="fl">
-											<div class="select_border">
-												<div class="select_containers ">
-													<select name="" class="select">
-														<option>北京</option>
-														<option>天津</option>
-														<option>上海</option>
-														<option>重庆</option>
-													</select>
-												</div>
-											</div>
-									</span></td>
-								</tr>
-								<tr>
-									<td class="td_right">&nbsp;</td>
-									<td class=""><input type="submit" name="button"
-										class="btn btn82 btn_save2" value="保存"> <input
-										type="button" name="button" class="btn btn82 btn_res"
-										value="重置">
-										
-										<input
-										type="button" name="button" class="btn btn82 btn_res"
-										value="关闭" onclick="showUserEditDiv('edtiDiv',0);">
-										</td>
-								</tr>
-							</table>
-						</form>
-					</div>
-          </div>
-        </div>
-     </div>
-     
     <div id="search_bar" class="">
        <div class="box">
           <div class="box_border">
@@ -140,6 +67,9 @@
 	                      </div> 
 	                    </span>
 	                  </td>
+	                  
+	                  
+	                  
 	                  <td><input type="submit" name="button" class="btn btn82 btn_search" value="查询"> </td>
 	                </tr>
 	              </table>
@@ -149,7 +79,7 @@
         </div>
     </div>
     <div id="button" class="mt10">
-       <input type="button" name="button" class="btn btn82 btn_add" value="新增" onclick="showUserEditDiv('edtiDiv',1);"> 
+       <input type="button" name="button" class="btn btn82 btn_add" value="新增"> 
        <input type="button" name="button" class="btn btn82 btn_del" value="删除"> 
        <input type="button" name="button" class="btn btn82 btn_checked" value="全选"> 
        <input type="button" name="button" class="btn btn82 btn_export" value="导出">
@@ -208,22 +138,74 @@
               </div>
         </div>
      </div>
+     
+     
+      
+     <div id="forms" class="mt10">
+        <div class="box">
+          <div class="box_border">
+            <div class="box_top"><b class="pl15">表单</b></div>
+            <div class="box_center">
+              <form action="${ctx}/admin/user!addUser.action" class="jqtransform" method="post">
+					<table class="form_table pt15 pb15" width="100%" border="0"
+						cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="td_right">用户名：</td>
+							<td class=""><input type="text" name="user.userName"
+								class="input-text lh30" size="40"></td>
+						</tr>
+						<tr>
+							<td class="td_right">登录账号：</td>
+							<td><input type="text" name="user.loginName"
+								class="input-text lh30" size="40"></td>
+						</tr>
+						<tr>
+							<td class="td_right">登录密码：</td>
+							<td><input type="text" name="user.loginPassword"
+								class="input-text lh30" size="40"></td>
+						</tr>
+						<tr>
+							<td class="td_right">电子邮箱：</td>
+							<td><input type="text" name="user.email"
+								class="input-text lh30" size="40"></td>
+						</tr>
+						<tr>
+							<td class="td_right">联系电话：</td>
+							<td><input type="text" name="user.tel"
+								class="input-text lh30" size="40"></td>
+						</tr>
+						<tr >
+                  <td class="td_right">下拉框：</td>
+                  <td class="">
+ 
+                    <span class="fl">
+                      <div class="select_border"> 
+                        <div class="select_containers "> 
+                        <select name="" class="select"> 
+                        <option>北京</option> 
+                        <option>天津</option> 
+                        <option>上海</option> 
+                        <option>重庆</option> 
+                        </select> 
+                        </div> 
+                      </div> 
+                    </span>
+                  </td>
+                 </tr>
+						
+						<tr>
+							<td class="td_right">&nbsp;</td>
+							<td class=""><input type="submit" name="button"
+								class="btn btn82 btn_save2" value="保存"> <input
+								type="button" name="button" class="btn btn82 btn_res"
+								value="重置"></td>
+						</tr>
+					</table>
+				</form>
+            </div>
+          </div>
+        </div>
+     </div>
    </div> 
  </body>
-<script type="text/javascript">
-     $(function(){  
-       $(".list_table").colResizable({
-         liveDrag:true,
-         gripInnerHtml:"<div class='grip'></div>", 
-         draggingClass:"dragging", 
-         minWidth:30
-       });
-       
-       var userId = "${id}";
-       if(userId != ''){
-    	   onclick="showUserEditDiv('edtiDiv',1)
-       }
-       
-     }); 
-</script>
 </html>

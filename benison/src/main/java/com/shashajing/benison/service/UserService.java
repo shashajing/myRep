@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Maps;
 import com.shashajing.benison.dao.UserDao;
 import com.shashajing.benison.entity.User;
 
@@ -19,6 +20,13 @@ public class UserService {
 	
 	public List<User> searchUser(Map<String, Object> parameters) {
 		return userDao.searchUser(parameters);
+	}
+	
+	public User searchUserById(String id) {
+		Map<String, Object> parameters = Maps.newHashMap();
+		parameters.put("uId", id);
+		List<User> list = userDao.searchUser(parameters);
+		return list.isEmpty()?null:list.get(0);
 	}
 
 	public int addUser(User user) {

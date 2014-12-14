@@ -18,6 +18,7 @@
 		</action>
 		<action name="user" class="userAction">
 			<result name="success">/WEB-INF/views/authority/userManage.jsp</result>
+			<result name="input">/WEB-INF/views/authority/userEdit.jsp</result>
 		</action>
 		<action name="news" class="newsAction">
 			<result name="success">/WEB-INF/views/news/newsManage.jsp</result>

@@ -21,14 +21,13 @@ public class FrameAction extends ActionSupport{
 	@Autowired
 	private UserService userService;
 	
-	@PostConstruct
 	public void searchUser() {
 		
-		Map<String, Object> parameters = Maps.newHashMap();
+		/*Map<String, Object> parameters = Maps.newHashMap();
 		userList = userService.searchUser(parameters);
 		for (User user : userList) {
 			System.out.println(user.getLoginName());
-		}
+		}*/
 	}
 	
 	

@@ -3,6 +3,7 @@ package com.shashajing.benison.web;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ public class UserAction extends ActionSupport{
 	private List<User> userList;
 	
 	private User user;
+	private String id;
 	
 	@Autowired
 	private UserService userService;
@@ -26,13 +28,22 @@ public class UserAction extends ActionSupport{
 	public String execute() throws Exception {
 		
 		Map<String, Object> parameters = Maps.newHashMap();
+		if (null != user) {
+			parameters.put("loginName", user.getLoginName());
+			parameters.put("userName", user.getUserName());
+			parameters.put("type", user.getType());
+			parameters.put("status", user.getStatus());
+		}
 		userList = userService.searchUser(parameters);
-		System.out.println(userList.size());
-		
 		return "success";
 	}
-
-
+	
+	public String initInput() {
+		if (StringUtils.isNotBlank(id)) {
+			user = userService.searchUserById(id);
+		}
+		return "success";
+	}
 	
 	public String addUser() {
 		
@@ -41,11 +52,14 @@ public class UserAction extends ActionSupport{
 		return "success";
 	}
 	
+	public String getId() {
+		return id;
+	}
 
-	
-	
-	
-	
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public User getUser() {
 		return user;
 	}
