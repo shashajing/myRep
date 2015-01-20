@@ -10,22 +10,22 @@ import java.util.Date;
  */
 public class User {
 	
-	private int uId;
+	private Long userId;
 	private String loginName;
 	private String loginPassword;
-	private int type;	
+	private Integer type;	
 	private String userName;
 	private String email;
 	private String tel;
-	private int status;
+	private Integer status;
 	private Date editTime;
 	private String editUserName;
 	
-	public int getuId() {
-		return uId;
+	public Long getUserId() {
+		return userId;
 	}
-	public void setuId(int uId) {
-		this.uId = uId;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	public String getLoginName() {
 		return loginName;
@@ -57,16 +57,16 @@ public class User {
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public int getType() {
+	public Integer getType() {
 		return type;
 	}
-	public void setType(int type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 	public Date getEditTime() {

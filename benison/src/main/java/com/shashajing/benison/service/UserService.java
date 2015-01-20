@@ -22,9 +22,13 @@ public class UserService {
 		return userDao.searchUser(parameters);
 	}
 	
+	public int countUser(Map<String, Object> parameters) {
+		return userDao.countUser(parameters);
+	}
+	
 	public User searchUserById(String id) {
 		Map<String, Object> parameters = Maps.newHashMap();
-		parameters.put("uId", id);
+		parameters.put("userId", id);
 		List<User> list = userDao.searchUser(parameters);
 		return list.isEmpty()?null:list.get(0);
 	}
