@@ -28,7 +28,7 @@
 				and userId = #{userId}
 			</if>
 		</where>
-		<if test="start != null and start != pageNum">
+		<if test="start != null and pageNum != null">
 			 LIMIT #{start},#{pageNum};
 	    </if>
 	</select>

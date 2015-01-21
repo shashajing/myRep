@@ -19,8 +19,7 @@
    </style>
 
 <script type="text/javascript">
-//判断浏览器ie6创建的div样式和非ie6创建的div样式
-//创建div
+//显示或者隐藏编辑表单
 function showUserEditDiv(idName,displayFlag) {
 	var div = document.getElementById(idName);
 	if(displayFlag == 0){
@@ -29,17 +28,16 @@ function showUserEditDiv(idName,displayFlag) {
 		div.style.display = "block";
 	}
 }
-
+//添加数据初始化
 function initAdd(){
 	restEditForm();
 	showUserEditDiv('edtiDiv',1);
 }
-
+//重置编辑表单
 function restEditForm(){
-	//$("#editForm")[0].reset();
 	$("#editForm").find(":input").not(":button,:submit,:reset").val("").removeAttr("checked").removeAttr("selected");
 }
-
+//初始化查看、编辑表单或者单条删除数据
 function initEdit(id,operateType){
 	if(id && id != ''){
 		if(operateType == 'delete'){
@@ -63,7 +61,7 @@ function initEdit(id,operateType){
             <div class="box_center">
 						<form id="editForm" action="${ctx}/admin/user!editUser.action?"
 							class="jqtransform" method="post">
-							<table class="form_table pt15 pb15" width="100%" border="0"
+							<table class="form_table pt5 pb5" width="100%" border="0"
 								cellpadding="0" cellspacing="0">
 								<tr>
 									<td class="td_right">用户名：</td>
@@ -118,7 +116,7 @@ function initEdit(id,operateType){
 									<td class="">
 										<input type="submit" id="buttonSave" name="button1" class="btn btn82 btn_save2" value="保存"> 
 										<input type="button" id="buttonReset" name="button2" class="btn btn82 btn_res" onclick="restEditForm()" value="重置">
-										<input type="button" name="button3" class="btn btn82 btn_res" value="关闭" onclick="showUserEditDiv('edtiDiv',0);">
+										<input type="button" name="button3" class="btn btn82 btn_res" value="关闭" onclick="editFormClose();">
 									</td>
 								</tr>
 							</table>
@@ -133,7 +131,7 @@ function initEdit(id,operateType){
 	       <div class="box">
 	          <div class="box_border">
 	            <div class="box_top"><b class="pl15">查询</b></div>
-	            <div class="box_center pt10 pb10">
+	            <div class="box_center">
 	              <table class="form_table" border="0" cellpadding="0" cellspacing="0">
 	                <tr>
 	                  <td>用户名</td>
@@ -175,14 +173,12 @@ function initEdit(id,operateType){
 	          </div>
 	        </div>
 	    </div>
-	    <div id="button" class="mt10">
+	    <div id="button" class="mt5">
 	       <input type="button" name="button" class="btn btn82 btn_add" value="新增" onclick="initAdd();"> 
 	       <input type="button" name="button" class="btn btn82 btn_del" value="删除" onclick="batchDelete();"> 
 	       <input type="button" name="button" class="btn btn82 btn_checked" value="全选" onclick="allSelect();">
-	       <input type="button" name="button" class="btn btn82 btn_export" value="导出">
-	         
 	     </div>
-	     <div id="table" class="mt10">
+	     <div id="table" class="mt5">
 	        <div class="box span10 oh">
 	              <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table">
 	                <tr>
@@ -255,6 +251,7 @@ function initEdit(id,operateType){
    </div> 
  </body>
 <script type="text/javascript">
+var operateType = "${operateType}";
 $(function(){  
   $(".list_table").colResizable({
     liveDrag:true,
@@ -262,7 +259,7 @@ $(function(){
     draggingClass:"dragging", 
     minWidth:30
   });
-  var operateType = "${operateType}";
+  //控制编辑表单的显示或者隐藏
   if(operateType != ''){ 
 	  if(operateType == 'update' || operateType == 'edit' || operateType == 'view'){
 		  if(operateType == 'view'){
@@ -278,7 +275,15 @@ $(function(){
 	  }
   }
 });
-
+//编辑表单的关闭动作
+function editFormClose(){
+	if(operateType == 'update' || operateType == 'edit' || operateType == 'view'){
+		$("#searchForm").submit();
+	} else {
+		showUserEditDiv('edtiDiv',0);
+	}
+}
+//全选单选框动作
 function idSelect(){
 	if($("#checkboxHead").attr("checked")){
 		$("[name = idCheckboxGroup]:checkbox").attr("checked", true);
@@ -286,11 +291,12 @@ function idSelect(){
 		$("[name = idCheckboxGroup]:checkbox").attr("checked", false);
 	}
 }
-
+//全选按钮动作
 function allSelect(){
 	$("#checkboxHead").attr("checked",true);
     $("[name = idCheckboxGroup]:checkbox").attr("checked", true);
 }
+//批量删除
 function batchDelete(){
 	var ids = getSelectId();
 	if(ids == ''){
@@ -301,7 +307,7 @@ function batchDelete(){
 		window.location.href="${ctx}/admin/user!deleteUser.action?id="+ids;
 	}
 }
-
+//或者勾选的id
 function getSelectId(){
 	var result = new Array();
 	$("[name = idCheckboxGroup]:checkbox").each(function () {
@@ -311,14 +317,12 @@ function getSelectId(){
 		 });
 	return result.join(",");
 }
-//翻页相关
+//翻页查询
 function pageSearch(currentPage, searchForm){
 	$("#common_currentPage").attr("value",currentPage);
 	var form = "#"+searchForm;
 	$(form).submit();
 	$("#common_currentPage").attr("value",'');
 }
-
-
 </script>
 </html>

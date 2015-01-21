@@ -2,24 +2,24 @@ package com.shashajing.benison.common;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
-
 /**
  * 分页对象
  * @author yanghanjing
  */
 public class Page {
 	private long start;//起始下标
-	private long end;//终止下标
 	private long total;//数据总数
-	private long pageNum = 4L;//每页显示数量
+	private long pageNum = 10L;//每页显示数量
 	private long pageTotal;//总页数
 	private long currentPage = 1;//当前页
-	private List<String> pageShowList = new ArrayList<String>();
+	private List<String> pageShowList = new ArrayList<String>();//分页栏显示的页码列表
 	
+	/*
+	 * 获得分页栏显示的页码列表
+	 */
 	public List<String> getPageShowList() {
 		long allPageNum = getPageTotal();
+		//使得当前页前后都有一定数目的页码，情况理想的话前面4个，后面5个
 		long from = currentPage - 4;
 		long to = currentPage + 5;
 		if (from > 0 && to <= allPageNum) {
@@ -32,23 +32,19 @@ public class Page {
 			}
 		} else if (from >= 0 && to > allPageNum) {
 			for (long i = allPageNum - 9; i <= allPageNum; i++) {
-				pageShowList.add(String.valueOf(i));
+				if (i > 0) {
+					pageShowList.add(String.valueOf(i));
+				}
 			}
 		}
-		
 		return pageShowList;
 	}
 	public long getStart() {
-		return (currentPage - 1)*pageNum;
+		this.start = (currentPage - 1)*pageNum;
+		return start;
 	}
 	public void setStart(long start) {
 		this.start = start;
-	}
-	public long getEnd() {
-		return end;
-	}
-	public void setEnd(long end) {
-		this.end = end;
 	}
 	public long getTotal() {
 		return total;

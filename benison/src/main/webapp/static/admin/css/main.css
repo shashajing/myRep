@@ -6,7 +6,7 @@
 /*box*/
 .box{}
 .box_border{border: 1px solid #d3dbde;}
-.box_top{height: 37px; line-height: 37px; background: url('../images/box_top.png') 0px 0px repeat-x;}
+.box_top{height: 27px; line-height: 27px; background: url('../images/box_top.png') 0px 0px repeat-x;}
 .box_top_l, .box_top_r{height: 37px;line-height: 37px;}
  
 /*button*/
