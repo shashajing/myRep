@@ -28,7 +28,9 @@
 				and userId = #{userId}
 			</if>
 		</where>
-		LIMIT #{start},#{pageNum};
+		<if test="start != null and start != pageNum">
+			 LIMIT #{start},#{pageNum};
+	    </if>
 	</select>
 	
 	<select id="countUser" parameterType="map" resultType="int">

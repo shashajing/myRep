@@ -6,25 +6,23 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Maps;
-import com.opensymphony.xwork2.ActionSupport;
-import com.shashajing.benison.common.Page;
+import com.shashajing.benison.common.CommonAction;
 import com.shashajing.benison.entity.User;
 import com.shashajing.benison.service.UserService;
 
 @Component("userAction")
-public class UserAction extends ActionSupport{
+@Scope("prototype")
+public class UserAction extends CommonAction{
 	private static final long serialVersionUID = 3384495531777315088L;
 
 	private List<User> userList;
 	
 	private User searchUser;
 	private User editUser;
-	private String id;
-	private String operateType;//search,add,update,edit,delete,view
-	private Page page = new Page();
 	
 	@Autowired
 	private UserService userService;
@@ -32,7 +30,7 @@ public class UserAction extends ActionSupport{
 	@Override
 	public String execute() throws Exception {
 		editUser = null;
-		operateType = "search";
+		setOperateType("search");
 		Map<String, Object> parameters = Maps.newHashMap();
 		if (null != searchUser) {
 			parameters.put("loginName", StringUtils.trimToNull(searchUser.getLoginName()));
@@ -40,16 +38,16 @@ public class UserAction extends ActionSupport{
 			parameters.put("type", searchUser.getType());
 			parameters.put("status", searchUser.getStatus());
 		}
-		page.setTotal(Long.valueOf(userService.countUser(parameters)));
-		parameters.put("start", page.getStartNum());
-		parameters.put("pageNum", page.getPageNum());
+		getPage().setTotal(Long.valueOf(userService.countUser(parameters)));
+		parameters.put("start", getPage().getStart());//起始下标
+		parameters.put("pageNum", getPage().getPageNum());//每页显示数量
 		userList = userService.searchUser(parameters);
 		return "success";
 	}
 	
 	public String initInput() {
-		if (StringUtils.isNotBlank(id)) {
-			editUser = userService.searchUserById(id);
+		if (StringUtils.isNotBlank(getId())) {
+			editUser = userService.searchUserById(getId());
 		}
 		return "success";
 	}
@@ -66,8 +64,8 @@ public class UserAction extends ActionSupport{
 	}
 	
 	public String deleteUser() {
-		if (StringUtils.isNotBlank(id)) {
-			String[] ids = id.split(",");
+		if (StringUtils.isNotBlank(getId())) {
+			String[] ids = getId().split(",");
 			List<Integer> idList = new ArrayList<Integer>(ids.length);
 			for (String uId : ids) {
 				idList.add(Integer.valueOf(uId));
@@ -77,14 +75,6 @@ public class UserAction extends ActionSupport{
 			}
 		}
 		return "toUserList";
-	}
-	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public User getSearchUser() {
@@ -105,21 +95,5 @@ public class UserAction extends ActionSupport{
 
 	public List<User> getUserList() {
 		return userList;
-	}
-
-	public String getOperateType() {
-		return operateType;
-	}
-
-	public void setOperateType(String operateType) {
-		this.operateType = operateType;
-	}
-
-	public Page getPage() {
-		return page;
-	}
-
-	public void setPage(Page page) {
-		this.page = page;
 	}
 }

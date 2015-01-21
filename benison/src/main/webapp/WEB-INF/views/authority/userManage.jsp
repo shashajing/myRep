@@ -127,13 +127,13 @@ function initEdit(id,operateType){
           </div>
         </div>
      </div>
-     
-    <div id="search_bar" class="">
-       <div class="box">
-          <div class="box_border">
-            <div class="box_top"><b class="pl15">查询</b></div>
-            <div class="box_center pt10 pb10">
-            <form action="${ctx}/admin/user.action?operateType=search">
+     <form id="searchForm" action="${ctx}/admin/user.action?operateType=search" method="post">
+     	<input type="hidden" id="common_currentPage" name="page.currentPage" />
+	    <div id="search_bar" class="">
+	       <div class="box">
+	          <div class="box_border">
+	            <div class="box_top"><b class="pl15">查询</b></div>
+	            <div class="box_center pt10 pb10">
 	              <table class="form_table" border="0" cellpadding="0" cellspacing="0">
 	                <tr>
 	                  <td>用户名</td>
@@ -171,76 +171,87 @@ function initEdit(id,operateType){
 	                  <td><input type="submit" name="button" class="btn btn82 btn_search" value="查询"> </td>
 	                </tr>
 	              </table>
-              </form>
-            </div>
-          </div>
-        </div>
-    </div>
-    <div id="button" class="mt10">
-       <input type="button" name="button" class="btn btn82 btn_add" value="新增" onclick="initAdd();"> 
-       <input type="button" name="button" class="btn btn82 btn_del" value="删除" onclick="batchDelete();"> 
-       <input type="button" name="button" class="btn btn82 btn_checked" value="全选" onclick="allSelect();">
-       <input type="button" name="button" class="btn btn82 btn_export" value="导出">
-         
-     </div>
-     <div id="table" class="mt10">
-        <div class="box span10 oh">
-              <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table">
-                <tr>
-                   <th width="3%"><input type="checkbox" id="checkboxHead" onclick="idSelect()"></th>
-                   <th width="12%">用户名称</th>
-                   <th width="12%">登录账号</th>
-                   <th width="10%">用户类型</th>
-                   <th width="15%">邮箱</th>
-                   <th width="10%">电话</th>
-                   <th width="5%">状态</th>
-                   <th width="10%">编辑时间</th>
-                   <th width="10%">操作人</th>
-                   <th width="13%">操作</th>
-                </tr>
-                
-                <s:iterator value="userList">
-	                <tr class="tr">
-	                   <td class="td_center"><input type="checkbox" name="idCheckboxGroup" value="${userId}"></td>
-	                   <td>${userName}</td>
-	                   <td>${loginName}</td>
-	                   <td>
-		                   <s:if test="type == 1">普通用户</s:if>
-		                   <s:elseif test="type == 2">管理员</s:elseif>
-	                   </td>
-	                   <td>${email}</td>
-	                   <td>${tel}</td>
-	                   <td>
-		                   <s:if test="status == 1">有效</s:if>
-		                   <s:elseif test="status == 0">无效</s:elseif>
-	                   </td>
-	                   <td><fmt:formatDate value="${editTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-	                   <td>${editUserName}</td>
-	                   <td>
-	                   		<a href="javascript:;" onclick="initEdit('${userId}','view');">查看</a>
-	                   		<a href="javascript:;" onclick="initEdit('${userId}','edit');">编辑</a>
-	                   		<a href="javascript:;" onclick="initEdit('${userId}','delete');">删除</a>
-	                   </td> 
+	            </div>
+	          </div>
+	        </div>
+	    </div>
+	    <div id="button" class="mt10">
+	       <input type="button" name="button" class="btn btn82 btn_add" value="新增" onclick="initAdd();"> 
+	       <input type="button" name="button" class="btn btn82 btn_del" value="删除" onclick="batchDelete();"> 
+	       <input type="button" name="button" class="btn btn82 btn_checked" value="全选" onclick="allSelect();">
+	       <input type="button" name="button" class="btn btn82 btn_export" value="导出">
+	         
+	     </div>
+	     <div id="table" class="mt10">
+	        <div class="box span10 oh">
+	              <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table">
+	                <tr>
+	                   <th width="3%"><input type="checkbox" id="checkboxHead" onclick="idSelect()"></th>
+	                   <th width="12%">用户名称</th>
+	                   <th width="12%">登录账号</th>
+	                   <th width="10%">用户类型</th>
+	                   <th width="15%">邮箱</th>
+	                   <th width="10%">电话</th>
+	                   <th width="5%">状态</th>
+	                   <th width="10%">编辑时间</th>
+	                   <th width="10%">操作人</th>
+	                   <th width="13%">操作</th>
 	                </tr>
-                </s:iterator>
-              
-              </table>
-              <div class="page mt10">
-                <div class="pagination">
-                  <ul>
-                      <li class="first-child"><a href="#">首页</a></li>
-                      <li class="disabled"><span>上一页</span></li>
-                      <li class="active"><span>1</span></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">下一页</a></li>
-                      <li class="last-child"><a href="#">末页</a></li>
-                      <li class="last-child">共${page.total}条数据</li>
-                  </ul>
-                </div>
-
-              </div>
-        </div>
-     </div>
+	                
+	                <s:iterator value="userList">
+		                <tr class="tr">
+		                   <td class="td_center"><input type="checkbox" name="idCheckboxGroup" value="${userId}"></td>
+		                   <td>${userName}</td>
+		                   <td>${loginName}</td>
+		                   <td>
+			                   <s:if test="type == 1">普通用户</s:if>
+			                   <s:elseif test="type == 2">管理员</s:elseif>
+		                   </td>
+		                   <td>${email}</td>
+		                   <td>${tel}</td>
+		                   <td>
+			                   <s:if test="status == 1">有效</s:if>
+			                   <s:elseif test="status == 0">无效</s:elseif>
+		                   </td>
+		                   <td><fmt:formatDate value="${editTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+		                   <td>${editUserName}</td>
+		                   <td>
+		                   		<a href="javascript:;" onclick="initEdit('${userId}','view');">查看</a>
+		                   		<a href="javascript:;" onclick="initEdit('${userId}','edit');">编辑</a>
+		                   		<a href="javascript:;" onclick="initEdit('${userId}','delete');">删除</a>
+		                   </td> 
+		                </tr>
+	                </s:iterator>
+	              
+	              </table>
+	              <div class="page mt10">
+	                <div class="pagination">
+	                  <ul>
+	                      <s:if test="page.currentPage == 1"><li class="disabled"><span>首页</span></li></s:if>
+	                      <s:else><li><a href="#" onclick="pageSearch(1, 'searchForm')">首页</a></li></s:else>
+	                      <s:if test="page.currentPage == 1"><li class="disabled"><span>上一页</span></li></s:if>
+	                      <s:else><li><a href="#" onclick="pageSearch(${page.currentPage - 1}, 'searchForm')">上一页</a></li></s:else>
+	                      
+				          <s:iterator value="page.pageShowList" var="value">
+				          	<s:if test="#value == page.currentPage">
+				          		<li><a href="#" onclick="pageSearch(${value}, 'searchForm')"><font style="color:red">${value}</font></a></li>
+				          	</s:if>
+			          		<s:else>
+			          			<li><a href="#" onclick="pageSearch(${value}, 'searchForm')">${value}</a></li>
+			          		</s:else>
+				          </s:iterator>
+	                      
+	                      <s:if test="page.currentPage == page.pageTotal"><li class="disabled"><span>下一页</span></li></s:if>
+	                      <s:else><li><a href="#" onclick="pageSearch(${page.currentPage + 1}, 'searchForm')">下一页</a></li></s:else>
+	                      <s:if test="page.currentPage == page.pageTotal"><li class="disabled"><span>末页</span></li></s:if>
+	                      <s:else><li><a href="#" onclick="pageSearch(${page.pageTotal}, 'searchForm')">末页</a></li>
+	                      </s:else><li class="last-child"><a href="#">共${page.total}条,${page.pageTotal}页</a></li>
+	                  </ul>
+	                </div>
+	              </div>
+	        </div>
+	     </div>
+     </form>
    </div> 
  </body>
 <script type="text/javascript">
@@ -300,7 +311,13 @@ function getSelectId(){
 		 });
 	return result.join(",");
 }
-
+//翻页相关
+function pageSearch(currentPage, searchForm){
+	$("#common_currentPage").attr("value",currentPage);
+	var form = "#"+searchForm;
+	$(form).submit();
+	$("#common_currentPage").attr("value",'');
+}
 
 
 </script>
