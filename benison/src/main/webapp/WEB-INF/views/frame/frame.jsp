@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="/struts-tags" prefix="s"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
@@ -97,11 +99,19 @@ function menuScroll(num){
     </div>
     <div class="side">
         <div class="sideMenu" style="margin:0 auto">
+          
+          <s:iterator value="moduleList" var="module">
+              <h3>${moduleName}</h3>
+          </s:iterator>
+          
+          
+          
+          
           <h3>权限管理</h3>
           <ul>
           	<li class="on">待办事宜</li>
             <li id="888"><a href="#" onclick="openMenu('/admin/user.action','888')">用户管理</a></li>
-            <li id="999"><a href="#" onclick="openMenu('/admin/module.action','999')">角色管理</a></li>
+            <li id="999"><a href="#" onclick="openMenu('/admin/module.action','999')">菜单管理</a></li>
           </ul>
           <h3>前台管理</h3>
           <ul>
@@ -126,28 +136,6 @@ function menuScroll(num){
             <li class="on">导航菜单</li>
             <li>导航菜单</li>
           </ul>
-          <h3> 导航菜单</h3>
-          <ul>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-          </ul>
-          <h3> 导航菜单</h3>
-          <ul>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-          </ul>
- 
- 
- 
-
        </div>
     </div>
     <div class="main">

@@ -1,5 +1,6 @@
 package com.shashajing.benison.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -76,6 +77,9 @@ public class Module {
 		this.parentModule = parentModule;
 	}
 	public List<Module> getSonModules() {
+		if (null == sonModules) {
+			sonModules = new ArrayList<Module>();
+		}
 		return sonModules;
 	}
 	public void setSonModules(List<Module> sonModules) {

@@ -1,5 +1,6 @@
 package com.shashajing.benison.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,19 @@ public class FrameAction extends ActionSupport{
 	
 	@Override
 	public String execute() throws Exception {
-		
-		moduleList = moduleService.searchModule(null);
-		
+		List<Module> modules = moduleService.searchModule(null);
+		moduleList = new ArrayList<Module>();
+		for (Module module : modules) {
+			if (module.getParentId() == null) {
+				moduleList.add(module);
+				for (Module m : modules) {
+					if (m.getParentId() != null 
+							&& m.getParentId().equals(module.getModuleId())) {
+						module.getSonModules().add(m);
+					}
+				}
+			}
+		}
 		return SUCCESS;
 	}
 
@@ -41,10 +52,14 @@ public class FrameAction extends ActionSupport{
 		}*/
 	}
 	
-	
-	
-	
-	
+	public List<Module> getModuleList() {
+		return moduleList;
+	}
+
+
+
+
+
 	public String gotoMain() {
 		
 		return "main";
