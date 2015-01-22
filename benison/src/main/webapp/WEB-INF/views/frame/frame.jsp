@@ -100,8 +100,8 @@ function menuScroll(num){
           <h3>权限管理</h3>
           <ul>
           	<li class="on">待办事宜</li>
-            <li><a href="#" onclick="openMenu('/admin/user.action')">用户管理</a></li>
-            <li>角色管理</li>
+            <li id="888"><a href="#" onclick="openMenu('/admin/user.action','888')">用户管理</a></li>
+            <li id="999"><a href="#" onclick="openMenu('/admin/module.action','999')">角色管理</a></li>
           </ul>
           <h3>前台管理</h3>
           <ul>
@@ -163,8 +163,10 @@ function menuScroll(num){
 </body>
 <script type="text/javascript">
 	
-function openMenu(url) {
-	url = "${ctx}" + url
+function openMenu(url,id) {
+	$(".sideMenu>ul>li").removeClass("on");
+	$("#"+id).addClass("on");
+	url = "${ctx}" + url;
 	$("#rightMain").attr("src",url);
 }
 

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.shashajing.benison.dao.ModuleDao">
+
+	<!-- 查询功能菜单 -->
+	<select id="searchModule" parameterType="map" resultType="Module">
+		select
+			t.moduleId,
+			t.parentId,
+			t.type,
+			t.module_name as moduleName,
+			t.module_url  as moduleUrl,
+			t.description,
+			t.editor,
+			t.editTime,
+			t1.module_name as parentModule
+		from
+			module t left join module t1 on t.parentId = t1.moduleId
+		<where>
+			<if test="moduleId != null">t.moduleId = #{moduleId}</if>
+			<if test="parentId != null">and t.parentId = #{parentId}</if>
+			<if test="type != null">and t.type = #{type}</if>
+			<if test="moduleName != null">and t.module_name like '%' || #{moduleName} || '%'</if>
+		</where>
+		<if test="start != null and pageNum != null">
+			 LIMIT #{start},#{pageNum};
+	    </if>
+	</select>
+	
+	<select id="countModule" parameterType="map" resultType="int">
+		select count(1)
+		from module
+		<where>
+			<if test="moduleId != null">moduleId = #{moduleId}</if>
+			<if test="parentId != null">and parentId = #{parentId}</if>
+			<if test="type != null">and type = #{type}</if>
+			<if test="moduleName != null">and module_name like '%' || #{moduleName} || '%'</if>
+		</where>
+	</select>
+	
+	<!-- 新增 -->
+	<insert id="addModule" parameterType="Module">
+		insert into module
+		(parentId,type,module_name,module_url,description,editor,editTime)
+		values(#{parentId},#{type},#{moduleName},#{moduleUrl,jdbcType=VARCHAR}
+		,#{description,jdbcType=VARCHAR},#{editor,jdbcType=VARCHAR},#{editTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<!-- 编辑 -->
+	<update id="updateModule" parameterType="Module">
+		update module 
+		<set>
+			<if test="parentId != null">parentId = #{parentId},</if>
+			<if test="type != null">type = #{type},</if>
+			<if test="moduleName != null">module_name = #{moduleName},</if>
+			<if test="moduleUrl != null">module_url = #{moduleUrl},</if>
+			<if test="description != null">description = #{description}</if>
+			<if test="editor != null">editor = #{editor}</if>
+			<if test="editTime != null">editTime = #{editTime}</if>
+		</set>
+		where moduleId = #{moduleId};
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteModule" parameterType="list">
+		delete from module
+		where moduleId in 
+		<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+</mapper> 

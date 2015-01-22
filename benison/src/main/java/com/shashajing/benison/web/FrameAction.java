@@ -1,26 +1,37 @@
 package com.shashajing.benison.web;
 
 import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Maps;
 import com.opensymphony.xwork2.ActionSupport;
-import com.shashajing.benison.entity.User;
-import com.shashajing.benison.service.UserService;
+import com.shashajing.benison.entity.Module;
+import com.shashajing.benison.service.ModuleService;
 
 @Component("frameAction")
 public class FrameAction extends ActionSupport{
 
-	private List<User> userList;
+	private List<Module> moduleList;
 	
 	@Autowired
-	private UserService userService;
+	private ModuleService moduleService;
 	
+	
+	
+	
+	@Override
+	public String execute() throws Exception {
+		
+		moduleList = moduleService.searchModule(null);
+		
+		return SUCCESS;
+	}
+
+
+
+
+
 	public void searchUser() {
 		
 		/*Map<String, Object> parameters = Maps.newHashMap();
@@ -31,12 +42,13 @@ public class FrameAction extends ActionSupport{
 	}
 	
 	
+	
+	
+	
 	public String gotoMain() {
 		
 		return "main";
 	}
 	
-	public List<User> getUserList() {
-		return userList;
-	}
+	
 }

@@ -18,9 +18,16 @@
 		</action>
 		<action name="user" class="userAction">
 			<result name="success">/WEB-INF/views/authority/userManage.jsp</result>
-			<result name="input">/WEB-INF/views/authority/userEdit.jsp</result>
 			<result name="toUserList" type="redirectAction">  
                 <param name="actionName">user</param>  
+                <param name="namespace">/admin</param>  
+                <param name="operateType">search</param>  
+            </result>
+		</action>
+		<action name="module" class="moduleAction">
+			<result name="success">/WEB-INF/views/authority/moduleManage.jsp</result>
+			<result name="toModuleList" type="redirectAction">  
+                <param name="actionName">module</param>  
                 <param name="namespace">/admin</param>  
                 <param name="operateType">search</param>  
             </result>
