@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.shashajing.benison.dao.RoleDao">
+
+	<!-- 查询 -->
+	<select id="searchRole" parameterType="map" resultType="Role">
+		select
+			t.roleId,
+			t.role_name as roleName,
+			t.description
+		from
+			role t
+		<where>
+			<if test="roleName != null">t.role_name like '%'||#{roleName}||'%'</if>
+			<if test="roleId != null">and t.roleId = #{roleId}</if>
+		</where>
+	</select>
+	
+	<!-- 新增 -->
+	<insert id="addRole" parameterType="Role">
+		insert into role
+		(role_name,description)
+		values(#{roleName},#{description,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 编辑 -->
+	<update id="updateRole" parameterType="Role">
+		update role 
+		<set>
+			<if test="roleName != null">role_name = #{roleName},</if>
+			<if test="description != null">description = #{description}</if>
+		</set>
+		where roleId = #{roleId};
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteRole" parameterType="list">
+		delete from role
+		where roleId in 
+		<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	
+	<!-- 新增用户角色关系 -->
+	<insert id="addUserRole" parameterType="list">
+		insert into userRole(roleId,userId)
+		select * from
+		(
+			<foreach item="item" collection="list" index="index"
+				separator="UNION ALL">
+				select #{roleId},#{userId} from dual
+			</foreach>
+		)
+	</insert>
+	
+	<!-- 新增菜单角色关系 -->
+	<insert id="addModuleRole" parameterType="list">
+		insert into moduleRole(roleId,moduleId)
+		select * from
+		(
+			<foreach item="item" collection="list" index="index"
+				separator="UNION ALL">
+				select #{roleId},#{moduleId} from dual
+			</foreach>
+		)
+	</insert>
+	
+	<!-- 删除用户角色关系 -->
+	<delete id="deleteUserRole" parameterType="map">
+		delete from userRole
+		<where>
+			<if test="roleId != null">and roleId = #{roleId}</if>
+			<if test="userId != null">and userId = #{userId}</if>
+			<if test="roleId == null and userId == null">and 1 = 2</if>
+		</where>
+	</delete>
+	
+	<!-- 删除菜单角色关系 -->
+	<delete id="deleteModuleRole" parameterType="map">
+		delete from userRole
+		<where>
+			<if test="roleId != null">and roleId = #{roleId}</if>
+			<if test="moduleId != null">and moduleId = #{moduleId}</if>
+			<if test="roleId == null and moduleId == null">and 1 = 2</if>
+		</where>
+	</delete>
+	
+</mapper> 

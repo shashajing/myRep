@@ -99,43 +99,16 @@ function menuScroll(num){
     </div>
     <div class="side">
         <div class="sideMenu" style="margin:0 auto">
-          
           <s:iterator value="moduleList" var="module">
-              <h3>${moduleName}</h3>
+             <h3>${moduleName}</h3>
+             <s:if test="#module.sonModules.size() > 0">
+             	<ul>
+             		<s:iterator value="#module.sonModules" var="sonModule">
+             			<li id="${moduleId}"><a href="#" onclick="openMenu('${moduleUrl}','${moduleId}')">${moduleName}</a></li>
+             		</s:iterator>
+             	</ul>
+			 </s:if>
           </s:iterator>
-          
-          
-          
-          
-          <h3>权限管理</h3>
-          <ul>
-          	<li class="on">待办事宜</li>
-            <li id="888"><a href="#" onclick="openMenu('/admin/user.action','888')">用户管理</a></li>
-            <li id="999"><a href="#" onclick="openMenu('/admin/module.action','999')">菜单管理</a></li>
-          </ul>
-          <h3>前台管理</h3>
-          <ul>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-          </ul>
-          <h3> 导航菜单</h3>
-          <ul>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-          </ul>
-          <h3>导航菜单</h3>
-          <ul>
-            <li >导航菜单</li>
-            <li>导航菜单</li>
-            <li>导航菜单</li>
-            <li class="on">导航菜单</li>
-            <li>导航菜单</li>
-          </ul>
        </div>
     </div>
     <div class="main">
@@ -150,11 +123,15 @@ function menuScroll(num){
     </div>
 </body>
 <script type="text/javascript">
-	
+//打开菜单
 function openMenu(url,id) {
+	if(!url || url == ''){
+		alert("该菜单尚未配置功能！");
+		return;
+	}
 	$(".sideMenu>ul>li").removeClass("on");
 	$("#"+id).addClass("on");
-	url = "${ctx}" + url;
+	url = "${ctx}".trim() + url.trim();
 	$("#rightMain").attr("src",url);
 }
 

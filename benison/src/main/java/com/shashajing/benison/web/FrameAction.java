@@ -13,13 +13,10 @@ import com.shashajing.benison.service.ModuleService;
 @Component("frameAction")
 public class FrameAction extends ActionSupport{
 
-	private List<Module> moduleList;
+	private List<Module> moduleList;//菜单列表
 	
 	@Autowired
 	private ModuleService moduleService;
-	
-	
-	
 	
 	@Override
 	public String execute() throws Exception {
@@ -39,31 +36,12 @@ public class FrameAction extends ActionSupport{
 		return SUCCESS;
 	}
 
-
-
-
-
-	public void searchUser() {
-		
-		/*Map<String, Object> parameters = Maps.newHashMap();
-		userList = userService.searchUser(parameters);
-		for (User user : userList) {
-			System.out.println(user.getLoginName());
-		}*/
-	}
-	
 	public List<Module> getModuleList() {
 		return moduleList;
 	}
-
-
-
-
 
 	public String gotoMain() {
 		
 		return "main";
 	}
-	
-	
 }

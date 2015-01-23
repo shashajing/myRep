@@ -32,6 +32,14 @@
                 <param name="operateType">search</param>  
             </result>
 		</action>
+		<action name="role" class="roleAction">
+			<result name="success">/WEB-INF/views/authority/roleManage.jsp</result>
+			<result name="toRoleList" type="redirectAction">  
+                <param name="actionName">role</param>  
+                <param name="namespace">/admin</param>  
+                <param name="operateType">search</param>  
+            </result>
+		</action>
 		<action name="news" class="newsAction">
 			<result name="success">/WEB-INF/views/news/newsManage.jsp</result>
 		</action>
