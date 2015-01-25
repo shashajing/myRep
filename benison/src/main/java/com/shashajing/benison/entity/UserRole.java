@@ -12,6 +12,9 @@ public class UserRole {
 	private Long roleId;
 	private Long userId;
 	
+	private String roleName;
+	private String userName;
+	
 	public Long getId() {
 		return id;
 	}
@@ -29,5 +32,17 @@ public class UserRole {
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }

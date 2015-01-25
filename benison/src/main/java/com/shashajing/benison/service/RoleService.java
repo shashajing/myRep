@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Maps;
 import com.shashajing.benison.dao.RoleDao;
 import com.shashajing.benison.entity.Role;
+import com.shashajing.benison.entity.UserRole;
 
 @Component
 @Transactional
@@ -27,6 +28,10 @@ public class RoleService {
 		parameters.put("roleId", id);
 		List<Role> list = roleDao.searchRole(parameters);
 		return list.isEmpty()?null:list.get(0);
+	}
+	
+	public List<UserRole> userRoleSearch(Map<String, Object> parameters) {
+		return roleDao.userRoleSearch(parameters);
 	}
 
 	public int addRole(Role role) {

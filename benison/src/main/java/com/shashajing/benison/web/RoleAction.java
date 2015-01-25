@@ -1,10 +1,14 @@
 package com.shashajing.benison.web;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -12,11 +16,12 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.Maps;
 import com.shashajing.benison.common.CommonAction;
 import com.shashajing.benison.entity.Role;
+import com.shashajing.benison.entity.UserRole;
 import com.shashajing.benison.service.RoleService;
 
 @Component("roleAction")
 @Scope("prototype")
-public class RoleAction extends CommonAction{
+public class RoleAction extends CommonAction {
 
 	private static final long serialVersionUID = 7515358606387010997L;
 
@@ -69,6 +74,27 @@ public class RoleAction extends CommonAction{
 			}
 		}
 		return "toRoleList";
+	}
+	
+	public String userRoleSearch() {
+		if (StringUtils.isNotBlank(getId())) {
+			Map<String, Object> parameters = Maps.newHashMap();
+			parameters.put("roleId", getId());
+			List<UserRole> userRoles = roleService.userRoleSearch(parameters);
+			System.out.println("--------------"+userRoles.size());
+			
+			StringBuffer buffer = new StringBuffer();
+			if (!userRoles.isEmpty()) {
+				
+				ObjectMapper objectMapper = new ObjectMapper();
+				try {
+					objectMapper.writeValue(getHttpServletResponse().getOutputStream(), userRoles);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
 	}
 
 	public Role getSearchRole() {

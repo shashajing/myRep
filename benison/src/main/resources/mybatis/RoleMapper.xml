@@ -88,5 +88,18 @@
 			<if test="roleId == null and moduleId == null">and 1 = 2</if>
 		</where>
 	</delete>
-	
+	<!-- 查询用户角色 -->
+	<select id="userRoleSearch" parameterType="map" resultType="UserRole">
+		select
+			k.id,
+			t.role_name as roleName,
+			u.userName
+		from
+			role t join userRole k on t.roleId = k.roleId
+			join user u on t.userId = u.userId
+		<where>
+			<if test="userName != null">u.userName like '%'||#{userName}||'%'</if>
+			<if test="roleId != null">and t.roleId = #{roleId}</if>
+		</where>
+	</select>
 </mapper> 

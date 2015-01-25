@@ -17,12 +17,8 @@
    <script type="text/javascript" src="../static/admin/js/colResizable-1.3.min.js"></script>
    <script type="text/javascript" src="../static/admin/js/common.js"></script>
    
-   
-   <script type="text/javascript" src="../static/admin/jqGrid/js/i18n/grid.locale-cn.js"/>
-   <script type="text/javascript" src="../static/admin/jqGrid/js/jquery.jqGrid.min.js"/>
-   
-   
-   
+   <script type="text/javascript" src="../static/admin/jqGrid/js/i18n/grid.locale-cn.js"></script>
+   <script type="text/javascript" src="../static/admin/jqGrid/js/jquery.jqGrid.min.js"></script>
    
    <title>Document</title>
    <style type="text/css">
@@ -31,37 +27,8 @@
    </style>
 
 <script type="text/javascript">
-//显示或者隐藏编辑表单
-function showModuleEditDiv(idName,displayFlag) {
-	var div = document.getElementById(idName);
-	if(displayFlag == 0){
-		div.style.display = "none";
-	} else {
-		div.style.display = "block";
-	}
-}
-//添加数据初始化
-function initAdd(){
-	restEditForm();
-	showModuleEditDiv('edtiDiv',1);
-}
-//重置编辑表单
-function restEditForm(){
-	$("#editForm").find(":input").not(":button,:submit,:reset").val("").removeAttr("checked").removeAttr("selected");
-}
-//初始化查看、编辑表单或者单条删除数据
-function initEdit(id,operateType){
-	if(id && id != ''){
-		if(operateType == 'delete'){
-			if(confirm("是否将此数据删除?")){
-				window.location.href="${ctx}/admin/role!deleteRole.action?id="+id+"&operateType="+operateType;
-			}
-		} else {
-			window.location.href="${ctx}/admin/role!initInput.action?id="+id+"&operateType="+operateType;
-		}
-	}
-}
 
+//http://blog.mn886.net/jqGrid/
 </script>
 </head>
  <body>
@@ -141,6 +108,8 @@ function initEdit(id,operateType){
 		                   		<a href="javascript:;" onclick="initEdit('${roleId}','view');">查看</a>
 		                   		<a href="javascript:;" onclick="initEdit('${roleId}','edit');">编辑</a>
 		                   		<a href="javascript:;" onclick="initEdit('${roleId}','delete');">删除</a>
+		                   		<a href="javascript:;" onclick="initRoleUser('${roleId}');">角色用户</a>
+		                   		<a href="javascript:;" onclick="initEdit('${roleId}');">角色菜单</a>
 		                   </td> 
 		                </tr>
 	                </s:iterator>
@@ -148,11 +117,26 @@ function initEdit(id,operateType){
 	        </div>
 	     </div>
      </form>
-     
-      <!-- jqGrid table list4 http://www.cnblogs.com/huozhicheng/archive/2012/11/11/2765610.html-->
-	  <table id="gridTable"></table>
-	  <!-- jqGrid 分页 div gridPager -->
-	  <div id="gridPager"></div>
+      <div id="button" class="mt5">
+      	 <table>
+      	 	<tr>
+      	 		<td>
+      	 			<table id="roleUserGridTable"></table>
+      	 			<!-- jqGrid 分页 div gridPager
+				      <div id="gridPager"></div>
+				       -->
+      	 		</td>
+      	 		<td>
+      	 			<table id="gridTable1"></table>
+      	 		</td>
+      	 	</tr>
+      	 </table>
+      
+	      
+	      
+	   </div>
+      
+	  
      
      
    </div> 
@@ -167,7 +151,6 @@ $(function(){
     minWidth:30
   });
   
-  alert(1);
   //控制编辑表单的显示或者隐藏
   if(operateType != ''){ 
 	  if(operateType == 'update' || operateType == 'edit' || operateType == 'view'){
@@ -183,49 +166,8 @@ $(function(){
 		  showModuleEditDiv('edtiDiv',0);
 	  }
   }
-  alert(2);
-  
-  $("#gridTable").jqGrid({
-      datatype: "local",
-      height: 250,
-      colNames:['编号','用户名', '性别', '邮箱', 'QQ','手机号','出生日期'],
-      colModel:[
-              {name:'id',index:'id', width:60, sorttype:"int"},
-              {name:'userName',index:'userName', width:90},
-              {name:'gender',index:'gender', width:90},
-              {name:'email',index:'email', width:125,sorttype:"string"},
-              {name:'QQ',index:'QQ', width:100},                
-              {name:'mobilePhone',index:'mobilePhone', width:120},                
-              {name:'birthday',index:'birthday', width:100, sorttype:"date"}                
-      ],
-      sortname:'id',
-      sortorder:'asc',
-      viewrecords:true,
-      rowNum:10,
-      rowList:[10,20,30],
-      pager:"#gridPager",
-      caption: "第一个jqGrid例子"
-}).navGrid('#pager2',{edit:false,add:false,del:false});
-var mydata = [
-      {id:"1",userName:"polaris",gender:"男",email:"fef@163.com",QQ:"33334444",mobilePhone:"13223423424",birthday:"1985-10-01"},
-      {id:"2",userName:"李四",gender:"女",email:"faf@gmail.com",QQ:"222222222",mobilePhone:"13223423",birthday:"1986-07-01"},
-      {id:"3",userName:"王五",gender:"男",email:"fae@163.com",QQ:"99999999",mobilePhone:"1322342342",birthday:"1985-10-01"},
-      {id:"4",userName:"马六",gender:"女",email:"aaaa@gmail.com",QQ:"23333333",mobilePhone:"132234662",birthday:"1987-05-01"},
-      {id:"5",userName:"赵钱",gender:"男",email:"4fja@gmail.com",QQ:"22222222",mobilePhone:"1343434662",birthday:"1982-10-01"},
-      {id:"6",userName:"小毛",gender:"男",email:"ahfi@yahoo.com",QQ:"4333333",mobilePhone:"1328884662",birthday:"1987-12-01"},
-      {id:"7",userName:"小李",gender:"女",email:"note@sina.com",QQ:"21122323",mobilePhone:"13220046620",birthday:"1985-10-01"},
-      {id:"8",userName:"小三",gender:"男",email:"oefh@sohu.com",QQ:"242424366",mobilePhone:"1327734662",birthday:"1988-12-01"},
-      {id:"9",userName:"孙先",gender:"男",email:"76454533@qq.com",QQ:"76454533",mobilePhone:"132290062",birthday:"1989-11-21"}
-      ];
-	for(var i=0;i<=mydata.length;i++)
-      jQuery("#gridTable").jqGrid('addRowData',i+1,mydata[i]);
-  
-  
-  
-  
-  
-  
 });
+
 //编辑表单的关闭动作
 function editFormClose(){
 	if(operateType == 'update' || operateType == 'edit' || operateType == 'view'){
@@ -275,5 +217,113 @@ function pageSearch(currentPage, searchForm){
 	$(form).submit();
 	$("#common_currentPage").attr("value",'');
 }
+
+//添加数据初始化
+function initAdd(){
+	restEditForm();
+	showModuleEditDiv('edtiDiv',1);
+}
+
+//显示或者隐藏编辑表单
+function showModuleEditDiv(idName,displayFlag) {
+	var div = document.getElementById(idName);
+	if(displayFlag == 0){
+		div.style.display = "none";
+	} else {
+		div.style.display = "block";
+	}
+}
+
+//重置编辑表单
+function restEditForm(){
+	$("#editForm").find(":input").not(":button,:submit,:reset").val("").removeAttr("checked").removeAttr("selected");
+}
+//初始化查看、编辑表单或者单条删除数据
+function initEdit(id,operateType){
+	if(id && id != ''){
+		if(operateType == 'delete'){
+			if(confirm("是否将此数据删除?")){
+				window.location.href="${ctx}/admin/role!deleteRole.action?id="+id+"&operateType="+operateType;
+			}
+		} else {
+			window.location.href="${ctx}/admin/role!initInput.action?id="+id+"&operateType="+operateType;
+		}
+	}
+}
+
+function initRoleUser(roleId){
+	if(!roleId || roleId == ''){
+		return;
+	}
+	var userRoleUrl = "http://127.0.0.1:8081/benison/admin/role!userRoleSearch.action?id=" + roleId+"&date="+ new Date().getTime();
+	alert(userRoleUrl);
+	$("#roleUserGridTable").jqGrid({
+		  url: userRoleUrl,
+	      datatype: "json",
+	      //postData:{'id':roleId}, //发送数据
+	      height: 250,
+	      colNames:['ID','角色名称','用户名称'],
+	      colModel:[
+	              {name:'id',index:'id', width:60, sorttype:"int"},
+	              {name:'roleName',index:'roleName', width:90},
+	              {name:'userName',index:'userName', width:90}              
+	      ],
+	      sortname:'id',
+	      sortorder:'asc',
+	      viewrecords:true,
+	      rowNum:10,
+	      rowList:[10,20,30],
+	      mtype:"get",
+	      viewrecords:true,
+	      //pager:"#gridPager",
+	      caption: "用户角色"
+	}).trigger("reloadGrid");
+	
+	
+	$("#gridTable12").jqGrid({
+	      datatype: "local",
+	      height: 250,
+	      colNames:['编号','用户名', '性别', '邮箱', 'QQ'],
+	      colModel:[
+	              {name:'id',index:'id', width:60, sorttype:"int"},
+	              {name:'userName',index:'userName', width:90},
+	              {name:'gender',index:'gender', width:90},
+	              {name:'email',index:'email', width:125,sorttype:"string"},
+	              {name:'QQ',index:'QQ', width:100}                
+	      ],
+	      sortname:'id',
+	      sortorder:'asc',
+	      viewrecords:true,
+	      rowNum:10,
+	      rowList:[10,20,30],
+	      //pager:"#gridPager",
+	      caption: "第一个jqGrid例子"
+	});
+	  
+	  var mydata = [
+	        {id:"1",userName:"polaris",gender:"男",email:"fef@163.com",QQ:"33334444"},
+	        {id:"2",userName:"李四",gender:"女",email:"faf@gmail.com",QQ:"222222222"},
+	        {id:"3",userName:"王五",gender:"男",email:"fae@163.com",QQ:"99999999"},
+	        {id:"4",userName:"马六",gender:"女",email:"aaaa@gmail.com",QQ:"23333333"},
+	        {id:"5",userName:"赵钱",gender:"男",email:"4fja@gmail.com",QQ:"22222222"},
+	        {id:"6",userName:"小毛",gender:"男",email:"ahfi@yahoo.com",QQ:"4333333"},
+	        {id:"7",userName:"小李",gender:"女",email:"note@sina.com",QQ:"21122323"},
+	        {id:"8",userName:"小三",gender:"男",email:"oefh@sohu.com",QQ:"242424366"},
+	        {id:"9",userName:"孙先",gender:"男",email:"76454533@qq.com",QQ:"76454533"}
+	        ];
+	  	/* for(var i=0;i<=mydata.length;i++){
+	  		jQuery("#roleUserGridTable").jqGrid('addRowData',i+1,mydata[i]);
+	  		jQuery("#gridTable1").jqGrid('addRowData',i+1,mydata[i]);
+	  	} */
+	
+}
+
+
+
+
+
+
+
+
 </script>
 </html>

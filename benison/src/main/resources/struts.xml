@@ -34,8 +34,9 @@
 		</action>
 		<action name="role" class="roleAction">
 			<result name="success">/WEB-INF/views/authority/roleManage.jsp</result>
+			<result name="input">/WEB-INF/views/authority/roleManage.jsp</result>
 			<result name="toRoleList" type="redirectAction">  
-                <param name="actionName">role</param>  
+                <param name="actionName">role</param>
                 <param name="namespace">/admin</param>  
                 <param name="operateType">search</param>  
             </result>

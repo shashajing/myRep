@@ -17,6 +17,8 @@ public interface RoleDao {
 	
 	List<Role> searchRole(Map<String, Object> parameters);
 	
+	List<UserRole> userRoleSearch(Map<String, Object> parameters);
+	
 	int addRole(Role role);
 	
 	int addUserRole(List<UserRole> userRoles);

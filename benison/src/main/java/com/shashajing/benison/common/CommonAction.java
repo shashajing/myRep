@@ -1,5 +1,12 @@
 package com.shashajing.benison.common;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.struts2.ServletActionContext;
+
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CommonAction extends ActionSupport{
@@ -9,9 +16,17 @@ public class CommonAction extends ActionSupport{
 	private String id;
 	private String operateType;//search,add,update,edit,delete,view
 	private Page page;
+	private HttpServletRequest httpServletRequest;
+	private HttpServletResponse httpServletResponse;
 	
 	public String getId() {
 		return id;
+	}
+	public HttpServletRequest getHttpServletRequest() {
+		return ServletActionContext.getRequest();
+	}
+	public HttpServletResponse getHttpServletResponse() {
+		return ServletActionContext.getResponse();
 	}
 	public void setId(String id) {
 		this.id = id;
