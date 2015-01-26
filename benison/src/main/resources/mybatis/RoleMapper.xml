@@ -96,7 +96,7 @@
 			u.userName
 		from
 			role t join userRole k on t.roleId = k.roleId
-			join user u on t.userId = u.userId
+			join user u on k.userId = u.userId
 		<where>
 			<if test="userName != null">u.userName like '%'||#{userName}||'%'</if>
 			<if test="roleId != null">and t.roleId = #{roleId}</if>

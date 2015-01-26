@@ -34,6 +34,16 @@
 		<url-pattern>/cxf/*</url-pattern>
 	</servlet-mapping>
 	
+	<!-- cxf -->
+	<servlet>
+		<servlet-name>test</servlet-name>
+		<servlet-class>com.shashajing.benison.web.Test</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>test</servlet-name>
+		<url-pattern>/test/*</url-pattern>
+	</servlet-mapping>
+	
 	<!-- Filter 定义 -->
 	<!-- Character Encoding filter -->
 	<filter>
@@ -62,7 +72,7 @@
 	</filter-mapping>
 	<filter-mapping>
         <filter-name>struts2</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>*.action</url-pattern>
     </filter-mapping>
 
 	<!-- Shiro Security filter 

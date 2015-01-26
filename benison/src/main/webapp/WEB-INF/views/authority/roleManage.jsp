@@ -256,9 +256,8 @@ function initRoleUser(roleId){
 		return;
 	}
 	var userRoleUrl = "http://127.0.0.1:8081/benison/admin/role!userRoleSearch.action?id=" + roleId+"&date="+ new Date().getTime();
-	alert(userRoleUrl);
 	$("#roleUserGridTable").jqGrid({
-		  url: userRoleUrl,
+		  url: "http://127.0.0.1:8081/benison/test/aaa",
 	      datatype: "json",
 	      //postData:{'id':roleId}, //发送数据
 	      height: 250,
