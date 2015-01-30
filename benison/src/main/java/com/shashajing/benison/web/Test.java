@@ -35,6 +35,7 @@ public class Test extends HttpServlet {
       out.println(jsonString);
         out.flush();
         out.close();*/
+		System.out.println(request.getContentType());
 		String jsondata = "{\"page\":\"1\"," + " \"total\":2," + " \"records\":\"13\"," + " \"rows\":" + " [" + " {" + " \"id\":\"13\"," + " \"cell\":" + " [\"13\",\"2007-10-06\",\"Client 3\",\"1000.00\",\"0.00\",\"1000.00\",null]" + " }," 
         + " {" + " \"id\":\"12\"," + " \"cell\":" + " [\"12\",\"管理员\",\"张氏\"]" + " }," 
         + " {" + " \"id\":\"4\"," + " \"cell\":" + " [\"4\",\"管理员\",\"Client 3\"]" + " }" + " ]," 

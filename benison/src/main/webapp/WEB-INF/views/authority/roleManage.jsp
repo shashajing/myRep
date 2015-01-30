@@ -10,15 +10,12 @@
    <link rel="stylesheet" href="../static/admin/css/common.css">
    <link rel="stylesheet" href="../static/admin/css/main.css">
    
-   <link type="text/css" rel="stylesheet" href="../static/admin/jqGrid/themes/cupertino/jquery-ui.min.css">
-   <link type="text/css" rel="stylesheet" href="../static/admin/jqGrid/themes/ui.jqgrid.css">
+   <link rel="stylesheet" type="text/css" href="../static/admin/dataTables/css/jquery.dataTables.css">
    
    <script type="text/javascript" src="../static/admin/js/jquery.min.js"></script>
    <script type="text/javascript" src="../static/admin/js/colResizable-1.3.min.js"></script>
    <script type="text/javascript" src="../static/admin/js/common.js"></script>
-   
-   <script type="text/javascript" src="../static/admin/jqGrid/js/i18n/grid.locale-cn.js"></script>
-   <script type="text/javascript" src="../static/admin/jqGrid/js/jquery.jqGrid.min.js"></script>
+   <script type="text/javascript" src="../static/admin/dataTables/js/jquery.dataTables.js"></script>
    
    <title>Document</title>
    <style type="text/css">
@@ -28,7 +25,7 @@
 
 <script type="text/javascript">
 
-//http://blog.mn886.net/jqGrid/
+
 </script>
 </head>
  <body>
@@ -117,23 +114,29 @@
 	        </div>
 	     </div>
      </form>
-      <div id="button" class="mt5">
+      <div id="" class="mt5">
       	 <table>
       	 	<tr>
       	 		<td>
-      	 			<table id="roleUserGridTable"></table>
-      	 			<!-- jqGrid 分页 div gridPager
-				      <div id="gridPager"></div>
-				       -->
+					<table cellpadding="0" cellspacing="0" border="0" class="cell-border"
+					       id="table_id">
+					    <thead>
+					    <tr>
+					        <th>xxxxx</th>
+					        <th>bbbbb</th>
+					        <th>操作</th>
+					    </tr>
+					    </thead>
+					    <tbody>
+					    </tbody>
+					</table>
+
       	 		</td>
       	 		<td>
       	 			<table id="gridTable1"></table>
       	 		</td>
       	 	</tr>
       	 </table>
-      
-	      
-	      
 	   </div>
       
 	  
@@ -142,6 +145,48 @@
    </div> 
  </body>
 <script type="text/javascript">
+/*
+add this plug in
+// you can call the below function to reload the table with current state
+Datatables刷新方法
+oTable.fnReloadAjax(oTable.fnSettings());
+*/
+$.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings) {
+   //oSettings.sAjaxSource = sNewSource;
+   this.fnClearTable(this);
+   this.oApi._fnProcessingDisplay(oSettings, true);
+   var that = this;
+   alert(oSettings.sAjaxSource);
+   $.getJSON(oSettings.sAjaxSource, null, function (json) {
+       /* Got the data - add it to the table */
+       alert(json.data);
+       for (var i = 0; i < json.data.length; i++) {
+           that.oApi._fnAddData(oSettings, json.data[i]);
+       }
+       oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+       that.fnDraw(that);
+       that.oApi._fnProcessingDisplay(oSettings, false);
+   });
+}
+
+/**
+ * 批量删除
+ * 未做
+ * @private
+ */
+function _deleteList() {
+    var str = '';
+    $("input[name='checkList']:checked").each(function (i, o) {
+        str += $(this).val();
+        str += ",";
+    });
+    if (str.length > 0) {
+        var IDS = str.substr(0, str.length - 1);
+        alert("你要删除的数据集id为" + IDS);
+    } else {
+        alert("至少选择一条记录操作");
+    }
+}
 var operateType = "${operateType}";
 $(function(){  
   $(".list_table").colResizable({
@@ -250,71 +295,94 @@ function initEdit(id,operateType){
 		}
 	}
 }
-
+var oTable;
+var searchRoleId;
 function initRoleUser(roleId){
 	if(!roleId || roleId == ''){
 		return;
 	}
-	var userRoleUrl = "http://127.0.0.1:8081/benison/admin/role!userRoleSearch.action?id=" + roleId+"&date="+ new Date().getTime();
-	alert(userRoleUrl);
-	$("#roleUserGridTable").jqGrid({
-		  url: userRoleUrl,
-	      datatype: "json",
-	      //postData:{'id':roleId}, //发送数据
-	      height: 250,
-	      colNames:['ID','角色名称','用户名称'],
-	      colModel:[
-	              {name:'id',index:'id', width:60, sorttype:"int"},
-	              {name:'roleName',index:'roleName', width:90},
-	              {name:'userName',index:'userName', width:90}              
-	      ],
-	      sortname:'id',
-	      sortorder:'asc',
-	      viewrecords:true,
-	      rowNum:10,
-	      rowList:[10,20,30],
-	      mtype:"get",
-	      viewrecords:true,
-	      //pager:"#gridPager",
-	      caption: "用户角色"
-	}).trigger("reloadGrid");
+	searchRoleId = roleId;
+	var userRoleUrl = "/benison/admin/userRoleSearch.action";// + roleId+"&date="+ new Date().getTime();
+	if(oTable){
+		oTable.fnDestroy(); 
+	}
+	oTable = $('#table_id').dataTable({
+		sAjaxSource: userRoleUrl,
+        bPaginate: false,
+        bServerSide: true,
+        bProcessing: true,
+        "bSort": false,
+        columns: [
+                  {data:'roleName'},
+                  {data:'userName'},
+                  {
+                      "mDataProp": "id",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<a href='javascript:void(0);' onclick='_deleteFun(" + sData + ")'>删除</a>");
+                      }
+                  }
+	 			  ],
+	 	"fnServerData":retrieveData, //与后台交互获取数据的处理函数 
+        "fnInitComplete": function (oSettings, json) {
+        },
+    } );
+	 
+	//函数的参数是固定，不能更改。  
+	function retrieveData(sSource, aoData, fnCallback ) {  
+	    //查询条件称加入参数数组     
+	    $.ajax( {     
+	        type: "POST",      
+	        //contentType: "application/json",   //这段代码不要加，我时延的是否后台会接受不到数据  
+	        url: sSource,   
+	        dataType:"json",  
+	        data:"id="+searchRoleId, //以json格式传递(struts2后台还是以string类型接受),year和month直接作为参数传递。  
+	        success: function(data) {   
+	           $("#url_sortdata").val(data.data);  
+	            fnCallback(data); //服务器端返回的对象的returnObject部分是要求的格式     
+	        }     
+	    });    
+	} 
 	
 	
-	$("#gridTable12").jqGrid({
-	      datatype: "local",
-	      height: 250,
-	      colNames:['编号','用户名', '性别', '邮箱', 'QQ'],
-	      colModel:[
-	              {name:'id',index:'id', width:60, sorttype:"int"},
-	              {name:'userName',index:'userName', width:90},
-	              {name:'gender',index:'gender', width:90},
-	              {name:'email',index:'email', width:125,sorttype:"string"},
-	              {name:'QQ',index:'QQ', width:100}                
-	      ],
-	      sortname:'id',
-	      sortorder:'asc',
-	      viewrecords:true,
-	      rowNum:10,
-	      rowList:[10,20,30],
-	      //pager:"#gridPager",
-	      caption: "第一个jqGrid例子"
-	});
-	  
-	  var mydata = [
-	        {id:"1",userName:"polaris",gender:"男",email:"fef@163.com",QQ:"33334444"},
-	        {id:"2",userName:"李四",gender:"女",email:"faf@gmail.com",QQ:"222222222"},
-	        {id:"3",userName:"王五",gender:"男",email:"fae@163.com",QQ:"99999999"},
-	        {id:"4",userName:"马六",gender:"女",email:"aaaa@gmail.com",QQ:"23333333"},
-	        {id:"5",userName:"赵钱",gender:"男",email:"4fja@gmail.com",QQ:"22222222"},
-	        {id:"6",userName:"小毛",gender:"男",email:"ahfi@yahoo.com",QQ:"4333333"},
-	        {id:"7",userName:"小李",gender:"女",email:"note@sina.com",QQ:"21122323"},
-	        {id:"8",userName:"小三",gender:"男",email:"oefh@sohu.com",QQ:"242424366"},
-	        {id:"9",userName:"孙先",gender:"男",email:"76454533@qq.com",QQ:"76454533"}
-	        ];
-	  	/* for(var i=0;i<=mydata.length;i++){
-	  		jQuery("#roleUserGridTable").jqGrid('addRowData',i+1,mydata[i]);
-	  		jQuery("#gridTable1").jqGrid('addRowData',i+1,mydata[i]);
-	  	} */
+	/* $.ajax({
+		url:userRoleUrl,
+		dataType:'json',
+		type:'POST',
+		data:'',
+		timeout: 30000,
+		error:function()
+		{
+			alertMsg.info("请求失败或超时,请稍后再试！");
+		},
+		success:function(data)
+		{
+			alert(data);
+		}
+		
+	}); */
+	
+	/**
+	 * 删除
+	 * @param id
+	 * @private
+	 */
+	function _deleteFun(id) {
+	    $.ajax({
+	        url: "http://dt.thxopen.com/example/resources/user_share/basic_curd/deleteFun.php",
+	        data: {"id": id},
+	        type: "post",
+	        success: function (backdata) {
+	            if (backdata) {
+	                oTable.fnReloadAjax(oTable.fnSettings());
+	            } else {
+	                alert("删除失败");
+	            }
+	        }, error: function (error) {
+	            console.log(error);
+	        }
+	    });
+	}
+	
 	
 }
 

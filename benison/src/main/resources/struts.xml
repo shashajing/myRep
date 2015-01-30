@@ -11,7 +11,7 @@
 	<!-- 改用spring托管实例 -->
 	<constant name="struts.objectFactory" value="spring"></constant>
 	
-	<package name="admin" namespace="/admin" extends="json-default">
+	<package name="admin" namespace="/admin" extends="struts-default">
 		<result-types>
             <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
         </result-types>
@@ -43,9 +43,9 @@
                 <param name="namespace">/admin</param>  
                 <param name="operateType">search</param>  
             </result>
-            <result type="json" name="jsontt">
-                    <param name="root">userMap</param>
-            </result>
+		</action>
+		<action name="userRoleSearch" class="roleAction" method="userRoleSearch">
+			<result name="success">/WEB-INF/views/authority/roleManage.jsp</result>
 		</action>
 		<action name="news" class="newsAction">
 			<result name="success">/WEB-INF/views/news/newsManage.jsp</result>
