@@ -302,7 +302,7 @@ function initRoleUser(roleId){
 		return;
 	}
 	searchRoleId = roleId;
-	var userRoleUrl = "/benison/admin/userRoleSearch.action";// + roleId+"&date="+ new Date().getTime();
+	var userRoleUrl = "${ctx}/admin/userRoleSearch.action";// + roleId+"&date="+ new Date().getTime();
 	if(oTable){
 		oTable.fnDestroy(); 
 	}

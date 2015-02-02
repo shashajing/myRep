@@ -84,12 +84,6 @@ public class RoleAction extends CommonAction {
 			Map<String, Object> parameters = Maps.newHashMap();
 			parameters.put("roleId", getId());
 			List<UserRole> userRoles = roleService.userRoleSearch(parameters);
-			System.out.println("--------------"+userRoles.size());
-			logger.info("-------+++-------"+userRoles.size());
-			StringBuffer buffer = new StringBuffer();
-			//String paramsJson = new JsonUtils().toJson(userRoles);
-			buffer.append("{\"draw\": 0,\"recordsTotal\": 57,\"recordsFiltered\": 57,")
-			.append("\"data\": [{\"roleName\":\"aa\",\"userName\":\"a1\"}]}");
 			AjaxDto<UserRole> dto = new AjaxDto<UserRole>();
 			dto.setDraw(1);
 			dto.setRecordsTotal(45);
@@ -106,6 +100,32 @@ public class RoleAction extends CommonAction {
 		return null;
 	}
 
+	public String deleteRoleUser(){
+		if (StringUtils.isNotBlank(getId())) {
+			Map<String, Object> parameters = Maps.newHashMap();
+			parameters.put("roleId", getId());
+			List<UserRole> userRoles = roleService.userRoleSearch(parameters);
+			AjaxDto<UserRole> dto = new AjaxDto<UserRole>();
+			dto.setDraw(1);
+			dto.setRecordsTotal(45);
+			dto.setRecordsFiltered(34);
+			dto.setData(userRoles);
+			
+			String aString = new JsonUtils().toJson(dto);
+			try {
+				getHttpServletResponse().getWriter().write(aString);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return null;
+	}
+	
+	
+	
+	
 	public Role getSearchRole() {
 		return searchRole;
 	}
