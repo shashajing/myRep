@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Maps;
 import com.shashajing.benison.common.AjaxDto;
+import com.shashajing.benison.common.AjaxObject;
 import com.shashajing.benison.common.CommonAction;
 import com.shashajing.benison.entity.Role;
 import com.shashajing.benison.entity.UserRole;
@@ -100,26 +101,24 @@ public class RoleAction extends CommonAction {
 		return null;
 	}
 
-	public String deleteRoleUser(){
+	public String deleteUserRole(){
 		if (StringUtils.isNotBlank(getId())) {
 			Map<String, Object> parameters = Maps.newHashMap();
-			parameters.put("roleId", getId());
-			List<UserRole> userRoles = roleService.userRoleSearch(parameters);
-			AjaxDto<UserRole> dto = new AjaxDto<UserRole>();
-			dto.setDraw(1);
-			dto.setRecordsTotal(45);
-			dto.setRecordsFiltered(34);
-			dto.setData(userRoles);
-			
-			String aString = new JsonUtils().toJson(dto);
+			parameters.put("id", getId());
+			AjaxObject ajaxObject = new AjaxObject();
 			try {
-				getHttpServletResponse().getWriter().write(aString);
+				roleService.deleteUserRole(parameters);
+				ajaxObject.setSucess(true);
+			} catch (Exception e) {
+				ajaxObject.setSucess(false);
+			}
+			try {
+				getHttpServletResponse().setContentType("text/json; charset=utf-8");
+				getHttpServletResponse().getWriter().write(ajaxObject.toJson());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		
 		return null;
 	}
 	

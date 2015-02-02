@@ -146,8 +146,6 @@
  </body>
 <script type="text/javascript">
 /*
-add this plug in
-// you can call the below function to reload the table with current state
 Datatables刷新方法
 oTable.fnReloadAjax(oTable.fnSettings());
 */
@@ -159,7 +157,6 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings) {
    alert(oSettings.sAjaxSource);
    $.getJSON(oSettings.sAjaxSource, null, function (json) {
        /* Got the data - add it to the table */
-       alert(json.data);
        for (var i = 0; i < json.data.length; i++) {
            that.oApi._fnAddData(oSettings, json.data[i]);
        }
@@ -318,7 +315,7 @@ function initRoleUser(roleId){
                   {
                       "mDataProp": "id",
                       "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                          $(nTd).html("<a href='javascript:void(0);' onclick='_deleteFun(" + sData + ")'>删除</a>");
+                          $(nTd).html("<a href='javascript:void(0);' onclick='deleteUserRole(" + sData + ")'>删除</a>");
                       }
                   }
 	 			  ],
@@ -326,67 +323,49 @@ function initRoleUser(roleId){
         "fnInitComplete": function (oSettings, json) {
         },
     } );
-	 
-	//函数的参数是固定，不能更改。  
-	function retrieveData(sSource, aoData, fnCallback ) {  
-	    //查询条件称加入参数数组     
-	    $.ajax( {     
-	        type: "POST",      
-	        //contentType: "application/json",   //这段代码不要加，我时延的是否后台会接受不到数据  
-	        url: sSource,   
-	        dataType:"json",  
-	        data:"id="+searchRoleId, //以json格式传递(struts2后台还是以string类型接受),year和month直接作为参数传递。  
-	        success: function(data) {   
-	           $("#url_sortdata").val(data.data);  
-	            fnCallback(data); //服务器端返回的对象的returnObject部分是要求的格式     
-	        }     
-	    });    
-	} 
-	
-	
-	/* $.ajax({
-		url:userRoleUrl,
-		dataType:'json',
-		type:'POST',
-		data:'',
-		timeout: 30000,
-		error:function()
-		{
-			alertMsg.info("请求失败或超时,请稍后再试！");
-		},
-		success:function(data)
-		{
-			alert(data);
-		}
-		
-	}); */
-	
-	/**
-	 * 删除
-	 * @param id
-	 * @private
-	 */
-	function _deleteFun(id) {
-	    $.ajax({
-	        url: "http://dt.thxopen.com/example/resources/user_share/basic_curd/deleteFun.php",
-	        data: {"id": id},
-	        type: "post",
-	        success: function (backdata) {
-	            if (backdata) {
-	                oTable.fnReloadAjax(oTable.fnSettings());
-	            } else {
-	                alert("删除失败");
-	            }
-	        }, error: function (error) {
-	            console.log(error);
-	        }
-	    });
-	}
-	
-	
 }
 
+//函数的参数是固定，不能更改。  
+function retrieveData(sSource, aoData, fnCallback ) {  
+    //查询条件称加入参数数组     
+    $.ajax( {     
+        type: "POST",      
+        //contentType: "application/json",   //这段代码不要加，我时延的是否后台会接受不到数据  
+        url: sSource,   
+        dataType:"json",  
+        data:"id="+searchRoleId, //以json格式传递(struts2后台还是以string类型接受),year和month直接作为参数传递。  
+        success: function(data) {   
+           $("#url_sortdata").val(data.data);  
+            fnCallback(data); //服务器端返回的对象的returnObject部分是要求的格式     
+        }     
+    });    
+} 
 
+/**
+ * 删除
+ * @param id
+ * @private
+ */
+function deleteUserRole(id) {
+	if(!confirm("是否确定删除?")){
+		return;
+	}
+    $.ajax({
+        url: "${ctx}/admin/role!deleteUserRole.action",
+        data: {"id": id},
+        type: "post",
+        success: function (backdata,dd) {
+            if (dd) {
+                //oTable.fnReloadAjax(oTable.fnSettings());
+            	initRoleUser(searchRoleId);
+            } else {
+                alert("删除失败");
+            }
+        }, error: function (error) {
+            console.log(error);
+        }
+    });
+}
 
 
 

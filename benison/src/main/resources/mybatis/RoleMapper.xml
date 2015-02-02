@@ -75,7 +75,8 @@
 		<where>
 			<if test="roleId != null">and roleId = #{roleId}</if>
 			<if test="userId != null">and userId = #{userId}</if>
-			<if test="roleId == null and userId == null">and 1 = 2</if>
+			<if test="id != null">and id = #{id}</if>
+			<if test="roleId == null and userId == null and id == null">and 1 = 2</if>
 		</where>
 	</delete>
 	

@@ -46,4 +46,8 @@ public class RoleService {
 	public int deleteRole(List<Long> ids) {
 		return roleDao.deleteRole(ids);
 	}
+	
+	public int deleteUserRole(Map<String, Object> parameters) {
+		return roleDao.deleteUserRole(parameters);
+	}
 }
