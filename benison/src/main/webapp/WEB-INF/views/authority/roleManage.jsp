@@ -118,8 +118,8 @@
       	 <table>
       	 	<tr>
       	 		<td>
-					<table cellpadding="0" cellspacing="0" border="0" class="cell-border"
-					       id="table_id">
+					<table cellpadding="0" cellspacing="0" border="0" class="cell-border" 
+					       id="userRole_table">
 					    <thead>
 					    <tr>
 					        <th>xxxxx</th>
@@ -133,7 +133,19 @@
 
       	 		</td>
       	 		<td>
-      	 			<table id="gridTable1"></table>
+      	 			<table cellpadding="0" cellspacing="0" border="0" class="cell-border" 
+					       id="user_table">
+					    <thead>
+					    <tr>
+					        <th>用户名</th>
+					        <th>账号</th>
+					        <th>电话</th>
+					        <th>操作</th>
+					    </tr>
+					    </thead>
+					    <tbody>
+					    </tbody>
+					</table>
       	 		</td>
       	 	</tr>
       	 </table>
@@ -145,26 +157,6 @@
    </div> 
  </body>
 <script type="text/javascript">
-/*
-Datatables刷新方法
-oTable.fnReloadAjax(oTable.fnSettings());
-*/
-$.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings) {
-   //oSettings.sAjaxSource = sNewSource;
-   this.fnClearTable(this);
-   this.oApi._fnProcessingDisplay(oSettings, true);
-   var that = this;
-   alert(oSettings.sAjaxSource);
-   $.getJSON(oSettings.sAjaxSource, null, function (json) {
-       /* Got the data - add it to the table */
-       for (var i = 0; i < json.data.length; i++) {
-           that.oApi._fnAddData(oSettings, json.data[i]);
-       }
-       oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
-       that.fnDraw(that);
-       that.oApi._fnProcessingDisplay(oSettings, false);
-   });
-}
 
 /**
  * 批量删除
@@ -292,23 +284,29 @@ function initEdit(id,operateType){
 		}
 	}
 }
-var oTable;
+var userRoleTable;
 var searchRoleId;
-function initRoleUser(roleId){
+var userTable;
+function initRoleUser(roleId) {
 	if(!roleId || roleId == ''){
 		return;
 	}
 	searchRoleId = roleId;
 	var userRoleUrl = "${ctx}/admin/userRoleSearch.action";// + roleId+"&date="+ new Date().getTime();
-	if(oTable){
-		oTable.fnDestroy(); 
+	if(userRoleTable){
+		userRoleTable.fnDestroy(); 
 	}
-	oTable = $('#table_id').dataTable({
+	userRoleTable = $('#userRole_table').dataTable({
 		sAjaxSource: userRoleUrl,
-        bPaginate: false,
+        bPaginate: false,//开启分页功能，如果不开启，将会全部显示 
         bServerSide: true,
-        bProcessing: true,
+        bProcessing: true,//开启读取服务器数据时显示正在加载中
+        bFilter:false,//控制是否显示search框
+        bInfo:false,//控制是否显示表格上的数据信息
         "bSort": false,
+        "sScrollY": "300px",//是否开启垂直滚动
+        "sScrollX": "100%",
+        "bScrollCollapse": true,
         columns: [
                   {data:'roleName'},
                   {data:'userName'},
@@ -323,10 +321,48 @@ function initRoleUser(roleId){
         "fnInitComplete": function (oSettings, json) {
         },
     } );
+	
+	initUserTable(roleId);
+}
+
+function initUserTable(roleId) {
+	if(!roleId || roleId == ''){
+		return;
+	}
+	var url = "${ctx}/admin/role!userSearch.action";// + roleId+"&date="+ new Date().getTime();
+	if(userTable){
+		userTable.fnDestroy(); 
+	}
+	userTable = $('#user_table').dataTable({
+		sAjaxSource: url,
+        bPaginate: false,//开启分页功能，如果不开启，将会全部显示 
+        bServerSide: true,
+        bProcessing: true,//开启读取服务器数据时显示正在加载中
+        bFilter:false,//控制是否显示search框
+        bInfo:false,//控制是否显示表格上的数据信息
+        "bSort": false,
+        "sScrollY": "300px",//是否开启垂直滚动
+        "sScrollX": "100%",
+        "bScrollCollapse": true,
+        columns: [
+                  {data:'userName'},
+                  {data:'loginName'},
+                  {data:'tel'},
+                  {
+                      "mDataProp": "userId",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<a href='javascript:void(0);' onclick='deleteUserRole(" + sData + ")'>删除</a>");
+                      }
+                  }
+	 			  ],
+	 	"fnServerData":retrieveData, //与后台交互获取数据的处理函数 
+        "fnInitComplete": function (oSettings, json) {
+        },
+    } );
 }
 
 //函数的参数是固定，不能更改。  
-function retrieveData(sSource, aoData, fnCallback ) {  
+function retrieveData(sSource, aoData, fnCallback ) {
     //查询条件称加入参数数组     
     $.ajax( {     
         type: "POST",      
@@ -341,25 +377,22 @@ function retrieveData(sSource, aoData, fnCallback ) {
     });    
 } 
 
-/**
- * 删除
- * @param id
- * @private
- */
+//删除用户角色
 function deleteUserRole(id) {
 	if(!confirm("是否确定删除?")){
 		return;
 	}
     $.ajax({
         url: "${ctx}/admin/role!deleteUserRole.action",
+        dataType:'json',
         data: {"id": id},
         type: "post",
-        success: function (backdata,dd) {
-            if (dd) {
-                //oTable.fnReloadAjax(oTable.fnSettings());
+        success: function (backdata) {
+            if (backdata.success) {
+                //userRoleTable.fnReloadAjax(userRoleTable.fnSettings());
             	initRoleUser(searchRoleId);
             } else {
-                alert("删除失败");
+                alert(backdata.message);
             }
         }, error: function (error) {
             console.log(error);

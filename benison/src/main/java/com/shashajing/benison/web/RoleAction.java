@@ -17,8 +17,10 @@ import com.shashajing.benison.common.AjaxDto;
 import com.shashajing.benison.common.AjaxObject;
 import com.shashajing.benison.common.CommonAction;
 import com.shashajing.benison.entity.Role;
+import com.shashajing.benison.entity.User;
 import com.shashajing.benison.entity.UserRole;
 import com.shashajing.benison.service.RoleService;
+import com.shashajing.benison.service.UserService;
 import com.shashajing.benison.utils.JsonUtils;
 
 @Component("roleAction")
@@ -35,6 +37,8 @@ public class RoleAction extends CommonAction {
 	
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private UserService userService;
 	
 	@Override
 	public String execute() throws Exception {
@@ -108,9 +112,10 @@ public class RoleAction extends CommonAction {
 			AjaxObject ajaxObject = new AjaxObject();
 			try {
 				roleService.deleteUserRole(parameters);
-				ajaxObject.setSucess(true);
+				ajaxObject.setSuccess(true);
+				ajaxObject.setMessage("删除成功");
 			} catch (Exception e) {
-				ajaxObject.setSucess(false);
+				ajaxObject.setSuccess(false);
 			}
 			try {
 				getHttpServletResponse().setContentType("text/json; charset=utf-8");
@@ -122,6 +127,26 @@ public class RoleAction extends CommonAction {
 		return null;
 	}
 	
+	public String userSearch() {
+		if (StringUtils.isNotBlank(getId())) {
+			Map<String, Object> parameters = Maps.newHashMap();
+			parameters.put("roleId", getId());
+			List<User> users = userService.searchUser(parameters);
+			AjaxDto<User> dto = new AjaxDto<User>();
+			dto.setDraw(1);
+			dto.setRecordsTotal(45);
+			dto.setRecordsFiltered(34);
+			dto.setData(users);
+			
+			String aString = new JsonUtils().toJson(dto);
+			try {
+				getHttpServletResponse().getWriter().write(aString);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
 	
 	
 	

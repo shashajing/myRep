@@ -13,7 +13,7 @@ public class AjaxObject {
 	public boolean isSuccess() {
 		return success;
 	}
-	public void setSucess(boolean success) {
+	public void setSuccess(boolean success) {
 		this.success = success;
 	}
 	public String getMessage() {
