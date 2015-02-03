@@ -114,10 +114,10 @@
 	        </div>
 	     </div>
      </form>
-      <div id="" class="mt5">
+      <div id="" class="mt5" >
       	 <table>
       	 	<tr>
-      	 		<td>
+      	 		<td width="40%">
 					<table cellpadding="0" cellspacing="0" border="0" class="cell-border" 
 					       id="userRole_table">
 					    <thead>
@@ -132,15 +132,16 @@
 					</table>
 
       	 		</td>
-      	 		<td>
+      	 		<td width="30%"></td>
+      	 		<td width="40%">
       	 			<table cellpadding="0" cellspacing="0" border="0" class="cell-border" 
 					       id="user_table">
 					    <thead>
 					    <tr>
-					        <th>用户名</th>
-					        <th>账号</th>
-					        <th>电话</th>
-					        <th>操作</th>
+					        <th width="25%">操作</th>
+					        <th width="25%">用户名</th>
+					        <th width="25%">账号</th>
+					        <th width="25%">电话</th>
 					    </tr>
 					    </thead>
 					    <tbody>
@@ -345,15 +346,15 @@ function initUserTable(roleId) {
         "sScrollX": "100%",
         "bScrollCollapse": true,
         columns: [
+				  {
+				    "mDataProp": "userId",
+				    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+				        $(nTd).html("<input type='checkbox' name='useridList' value='" + sData + "'/>");
+				    }
+				  },
                   {data:'userName'},
                   {data:'loginName'},
-                  {data:'tel'},
-                  {
-                      "mDataProp": "userId",
-                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                          $(nTd).html("<a href='javascript:void(0);' onclick='deleteUserRole(" + sData + ")'>删除</a>");
-                      }
-                  }
+                  {data:'tel'}
 	 			  ],
 	 	"fnServerData":retrieveData, //与后台交互获取数据的处理函数 
         "fnInitComplete": function (oSettings, json) {
