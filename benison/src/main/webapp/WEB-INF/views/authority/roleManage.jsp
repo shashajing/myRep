@@ -138,9 +138,9 @@
 					       id="user_table">
 					    <thead>
 					    <tr>
-					        <th width="25%">操作</th>
-					        <th width="25%">用户名</th>
-					        <th width="25%">账号</th>
+					        <th width="15%"><input type="checkbox" id='userCheckAll'></th>
+					        <th width="30%">用户名</th>
+					        <th width="30%">账号</th>
 					        <th width="25%">电话</th>
 					    </tr>
 					    </thead>
@@ -159,24 +159,6 @@
  </body>
 <script type="text/javascript">
 
-/**
- * 批量删除
- * 未做
- * @private
- */
-function _deleteList() {
-    var str = '';
-    $("input[name='checkList']:checked").each(function (i, o) {
-        str += $(this).val();
-        str += ",";
-    });
-    if (str.length > 0) {
-        var IDS = str.substr(0, str.length - 1);
-        alert("你要删除的数据集id为" + IDS);
-    } else {
-        alert("至少选择一条记录操作");
-    }
-}
 var operateType = "${operateType}";
 $(function(){  
   $(".list_table").colResizable({
@@ -201,6 +183,16 @@ $(function(){
 		  showModuleEditDiv('edtiDiv',0);
 	  }
   }
+  
+//checkbox全选
+  $("#userCheckAll").live("click", function () {
+      if ($(this).attr("checked") === "checked") {
+          $("input[name='userCheckList']").attr("checked", $(this).attr("checked"));
+      } else {
+          $("input[name='userCheckList']").attr("checked", false);
+      }
+  });
+  
 });
 
 //编辑表单的关闭动作
@@ -349,7 +341,7 @@ function initUserTable(roleId) {
 				  {
 				    "mDataProp": "userId",
 				    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-				        $(nTd).html("<input type='checkbox' name='useridList' value='" + sData + "'/>");
+				        $(nTd).html("<input type='checkbox' name='userCheckList' value='" + sData + "'/>");
 				    }
 				  },
                   {data:'userName'},
@@ -357,8 +349,13 @@ function initUserTable(roleId) {
                   {data:'tel'}
 	 			  ],
 	 	"fnServerData":retrieveData, //与后台交互获取数据的处理函数 
+	 	"sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row-fluid'<'span6'i><'span6 'p>>",
         "fnInitComplete": function (oSettings, json) {
-        },
+            $('<a href="#" class="btn btn-danger" id="addUserToRole">添加到当前角色</a>').appendTo($('.myBtnBox'));
+            $("#addUserToRole").click(addUserToRoleFun);
+        }
+        
+        
     } );
 }
 
@@ -401,7 +398,36 @@ function deleteUserRole(id) {
     });
 }
 
-
+function addUserToRoleFun() {
+    var str = '';
+    $("input[name='userCheckList']:checked").each(function (i, o) {
+        str += $(this).val();
+        str += ",";
+    });
+    if (str.length > 0) {
+        var ids = str.substr(0, str.length - 1);
+        
+        if(confirm("是否确定将这些用户添加到当前角色?")){
+        	$.ajax({
+                url: "${ctx}/admin/role!addUserRole.action",
+                dataType:'json',
+                data: {"id": ids,"roleId":searchRoleId},
+                type: "post"
+                success: function (backdata) {
+                    if (backdata.success) {
+                    	initRoleUser(searchRoleId);
+                    } else {
+                        alert(backdata.message);
+                    }
+                }, error: function (error) {
+                    console.log(error);
+                }
+            });
+    	}
+    } else {
+        alert("至少选择一个用户!");
+    }
+}
 
 
 

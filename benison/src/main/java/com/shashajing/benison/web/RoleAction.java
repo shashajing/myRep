@@ -148,6 +148,34 @@ public class RoleAction extends CommonAction {
 		return null;
 	}
 	
+	public String addUserRole() {
+		if (StringUtils.isNotBlank(getId())) {
+			
+			String[] userIds = getId().split(",");
+			String roleId = getHttpServletRequest().getParameter("roleId");
+			for (int i = 0; i < userIds.length; i++) {
+			}
+			
+			
+			Map<String, Object> parameters = Maps.newHashMap();
+			parameters.put("roleId", getId());
+			List<User> users = userService.searchUser(parameters);
+			AjaxDto<User> dto = new AjaxDto<User>();
+			dto.setDraw(1);
+			dto.setRecordsTotal(45);
+			dto.setRecordsFiltered(34);
+			dto.setData(users);
+			
+			String aString = new JsonUtils().toJson(dto);
+			try {
+				getHttpServletResponse().getWriter().write(aString);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+	
 	
 	
 	public Role getSearchRole() {
