@@ -50,4 +50,7 @@ public class RoleService {
 	public int deleteUserRole(Map<String, Object> parameters) {
 		return roleDao.deleteUserRole(parameters);
 	}
+	public int addUserRole(Map<String, Object> parameters) {
+		return roleDao.addUserRole(parameters);
+	}
 }

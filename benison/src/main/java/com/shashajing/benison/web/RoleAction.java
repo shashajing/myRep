@@ -2,6 +2,7 @@ package com.shashajing.benison.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -153,22 +154,24 @@ public class RoleAction extends CommonAction {
 			
 			String[] userIds = getId().split(",");
 			String roleId = getHttpServletRequest().getParameter("roleId");
-			for (int i = 0; i < userIds.length; i++) {
+			if (userIds.length > 0 && StringUtils.isNotBlank(roleId)) {
+				List<UserRole> userRoles = new ArrayList<UserRole>(userIds.length);
+				for (String userId : userIds) {
+					UserRole userRole = new UserRole();
+					userRole.setUserId(Long.valueOf(userId));
+					userRole.setRoleId(Long.valueOf(roleId));
+					userRoles.add(userRole);
+				}
+				Map<String, Object> parameters = new HashMap<String, Object>();
+				parameters.put("list", userRoles);
+				roleService.addUserRole(parameters);
 			}
-			
-			
-			Map<String, Object> parameters = Maps.newHashMap();
-			parameters.put("roleId", getId());
-			List<User> users = userService.searchUser(parameters);
-			AjaxDto<User> dto = new AjaxDto<User>();
-			dto.setDraw(1);
-			dto.setRecordsTotal(45);
-			dto.setRecordsFiltered(34);
-			dto.setData(users);
-			
-			String aString = new JsonUtils().toJson(dto);
+			AjaxObject ajaxObject = new AjaxObject();
+			ajaxObject.setSuccess(true);
+			ajaxObject.setMessage("添加成功");
 			try {
-				getHttpServletResponse().getWriter().write(aString);
+				getHttpServletResponse().setContentType("text/json; charset=utf-8");
+				getHttpServletResponse().getWriter().write(ajaxObject.toJson());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

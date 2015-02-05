@@ -412,10 +412,11 @@ function addUserToRoleFun() {
                 url: "${ctx}/admin/role!addUserRole.action",
                 dataType:'json',
                 data: {"id": ids,"roleId":searchRoleId},
-                type: "post"
+                type: "post",
                 success: function (backdata) {
                     if (backdata.success) {
                     	initRoleUser(searchRoleId);
+                    	initUserTable(searchRoleId);
                     } else {
                         alert(backdata.message);
                     }

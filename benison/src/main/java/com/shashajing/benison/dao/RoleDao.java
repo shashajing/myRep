@@ -21,7 +21,7 @@ public interface RoleDao {
 	
 	int addRole(Role role);
 	
-	int addUserRole(List<UserRole> userRoles);
+	int addUserRole(Map<String, Object> parameters);
 	
 	int addModuleRole(List<ModuleRole> moduleRoles);
 	

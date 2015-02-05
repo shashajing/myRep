@@ -46,15 +46,11 @@
 	
 	
 	<!-- 新增用户角色关系 -->
-	<insert id="addUserRole" parameterType="list">
-		insert into userRole(roleId,userId)
-		select * from
-		(
-			<foreach item="item" collection="list" index="index"
-				separator="UNION ALL">
-				select #{roleId},#{userId} from dual
-			</foreach>
-		)
+	<insert id="addUserRole" parameterType="map">
+		insert into userRole(roleId,userId) values 
+		<foreach collection="list" item="item" index="index" separator="," > 
+          (#{item.roleId},#{item.userId}) 
+        </foreach> 
 	</insert>
 	
 	<!-- 新增菜单角色关系 -->
