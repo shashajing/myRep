@@ -23,11 +23,6 @@
 	.hidden{display:none;}
 	#www_zzjs_net{width:498px; height:100px;padding:4px 10px 10px;background-color:#FFFFFF;border:1px solid #05549d;color:#333333;line-height:24px;text-align:left;-webkit-box-shadow:5px 2px 6px #000;-moz-box-shadow:3px 3px 6px #555;}
    </style>
-
-<script type="text/javascript">
-
-
-</script>
 </head>
  <body>
   <div class="container">
@@ -85,7 +80,7 @@
 	    </div>
 	    <div id="button" class="mt5">
 	       <input type="button" name="button" class="btn btn82 btn_add" value="新增" onclick="initAdd();"> 
-	       <input type="button" name="button" class="btn btn82 btn_del" value="删除" onclick="batchDelete();"> 
+	       <input type="button" name="button" class="btn btn82 btn_del" value="删除" onclick="batchDeleteRole();"> 
 	       <input type="button" name="button" class="btn btn82 btn_checked" value="全选" onclick="allSelect();">
 	     </div>
 	     <div id="table" class="mt5">
@@ -106,7 +101,7 @@
 		                   		<a href="javascript:;" onclick="initEdit('${roleId}','view');">查看</a>
 		                   		<a href="javascript:;" onclick="initEdit('${roleId}','edit');">编辑</a>
 		                   		<a href="javascript:;" onclick="initEdit('${roleId}','delete');">删除</a>
-		                   		<a href="javascript:;" onclick="initRoleUser('${roleId}');">角色用户</a>
+		                   		<a href="javascript:;" onclick="showRoleUser('${roleId}');">角色用户</a>
 		                   		<a href="javascript:;" onclick="initEdit('${roleId}');">角色菜单</a>
 		                   </td> 
 		                </tr>
@@ -115,35 +110,32 @@
 	        </div>
 	     </div>
      </form>
-      <div id="" class="" >
-      	 <table>
+      <div id="userRoleDiv" class="" >
+      	 <table width="100%">
       	 	<tr>
       	 		<td width="40%">
-					<table cellpadding="0" cellspacing="0" border="0" class="cell-border" 
-					       id="userRole_table">
+					<table cellpadding="0" cellspacing="0" border="0" class="cell-border" id="userRole_table">
 					    <thead>
 					    <tr>
-					        <th style="width:80px">xxxxx</th>
-					        <th style="width:80px">bbbbb</th>
+					        <th style="width:80px">角色</th>
+					        <th style="width:80px">用户</th>
 					        <th style="width:80px">操作</th>
 					    </tr>
 					    </thead>
 					    <tbody>
 					    </tbody>
 					</table>
-
       	 		</td>
-      	 		<td width="20%"></td>
-      	 		<td width="40%">
-      	 			<table cellpadding="0" cellspacing="0" border="0" class="cell-border" 
-					       id="user_table">
+      	 		<td width="5%"></td>
+      	 		<td width="55%">
+      	 			<table cellpadding="0" cellspacing="0" border="0" class="cell-border" id="user_table">
 					    <thead>
-					    <tr>
-					        <th width="15%"><input type="checkbox" id='userCheckAll'></th>
-					        <th width="30%">用户名</th>
-					        <th width="30%">账号</th>
-					        <th width="25%">电话</th>
-					    </tr>
+						    <tr>
+						        <th width="15%"><input type="checkbox" id='userCheckAll'></th>
+						        <th width="30%">用户</th>
+						        <th width="30%">账号</th>
+						        <th width="25%">电话</th>
+						    </tr>
 					    </thead>
 					    <tbody>
 					    </tbody>
@@ -152,6 +144,7 @@
       	 	</tr>
       	 </table>
 	   </div>
+	   <div id="moduleRoleDiv" class="" >3255</div>
       
 	  
      
@@ -185,7 +178,7 @@ $(function(){
 	  }
   }
   
-//checkbox全选
+  //checkbox全选
   $("#userCheckAll").live("click", function () {
       if ($(this).attr("checked") === "checked") {
           $("input[name='userCheckList']").attr("checked", $(this).attr("checked"));
@@ -217,8 +210,8 @@ function allSelect(){
 	$("#checkboxHead").attr("checked",true);
     $("[name = idCheckboxGroup]:checkbox").attr("checked", true);
 }
-//批量删除
-function batchDelete(){
+//批量删除角色
+function batchDeleteRole(){
 	var ids = getSelectId();
 	if(ids == ''){
 		alert("请勾选数据！");
@@ -278,9 +271,32 @@ function initEdit(id,operateType){
 		}
 	}
 }
+//角色用户----------------------------------------
 var userRoleTable;
 var searchRoleId;
 var userTable;
+//显示角色用户div
+function showRoleUser(roleId){
+	if(!roleId || roleId == ''){
+		return;
+	}
+	$("#userRoleDiv").show();
+	$("#moduleRoleDiv").hide();
+	initRoleUser(roleId);
+	initUserTable(roleId);
+}
+
+//显示角色菜单div
+function showRoleModule(roleId){
+	if(!roleId || roleId == ''){
+		return;
+	}
+	$("#userRoleDiv").hide();
+	$("#moduleRoleDiv").show();
+	
+}
+
+//初始化角色用户列表
 function initRoleUser(roleId) {
 	if(!roleId || roleId == ''){
 		return;
@@ -311,14 +327,12 @@ function initRoleUser(roleId) {
                       }
                   }
 	 			  ],
-	 	"fnServerData":retrieveData, //与后台交互获取数据的处理函数 
+	 	"fnServerData":retrieveUserData, //与后台交互获取数据的处理函数 
         "fnInitComplete": function (oSettings, json) {
         },
     } );
-	
-	initUserTable(roleId);
 }
-
+//初始化用户列表
 function initUserTable(roleId) {
 	if(!roleId || roleId == ''){
 		return;
@@ -349,7 +363,7 @@ function initUserTable(roleId) {
                   {data:'loginName'},
                   {data:'tel'}
 	 			  ],
-	 	"fnServerData":retrieveData, //与后台交互获取数据的处理函数 
+	 	"fnServerData":retrieveUserData, //与后台交互获取数据的处理函数 
 	 	"sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row-fluid'<'span6'i><'span6 'p>>",
         "fnInitComplete": function (oSettings, json) {
             $('<a href="#" class="btn btn-danger" id="addUserToRole">添加到当前角色</a>').appendTo($('.myBtnBox'));
@@ -361,11 +375,10 @@ function initUserTable(roleId) {
 }
 
 //函数的参数是固定，不能更改。  
-function retrieveData(sSource, aoData, fnCallback ) {
+function retrieveUserData(sSource, aoData, fnCallback ) {
     //查询条件称加入参数数组     
     $.ajax( {     
         type: "POST",      
-        //contentType: "application/json",   //这段代码不要加，我时延的是否后台会接受不到数据  
         url: sSource,   
         dataType:"json",  
         data:"id="+searchRoleId, //以json格式传递(struts2后台还是以string类型接受),year和month直接作为参数传递。  
@@ -416,7 +429,6 @@ function addUserToRoleFun() {
                 success: function (backdata) {
                     if (backdata.success) {
                     	initRoleUser(searchRoleId);
-                    	//initUserTable(searchRoleId);
                     } else {
                         alert(backdata.message);
                     }
@@ -430,6 +442,7 @@ function addUserToRoleFun() {
     }
 }
 
+//角色菜单----------------------------------------
 
 
 
