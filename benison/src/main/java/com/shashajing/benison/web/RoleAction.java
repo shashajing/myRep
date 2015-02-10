@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -30,8 +28,6 @@ public class RoleAction extends CommonAction {
 
 	private static final long serialVersionUID = 7515358606387010997L;
 	
-	private Logger logger = LoggerFactory.getLogger("xxxx");
-
 	private List<Role> roleList;
 	private Role searchRole;
 	private Role editRole;
@@ -50,14 +46,14 @@ public class RoleAction extends CommonAction {
 			parameters.put("roleName", StringUtils.trimToNull(searchRole.getRoleName()));
 		}
 		roleList = roleService.searchRole(parameters);
-		return "success";
+		return SUCCESS;
 	}
 	
 	public String initInput() {
 		if (StringUtils.isNotBlank(getId())) {
 			editRole = roleService.searchRoleById(getId());
 		}
-		return "success";
+		return SUCCESS;
 	}
 	
 	public String editRole() {
@@ -95,13 +91,7 @@ public class RoleAction extends CommonAction {
 			dto.setRecordsTotal(45);
 			dto.setRecordsFiltered(34);
 			dto.setData(userRoles);
-			
-			String aString = new JsonUtils().toJson(dto);
-			try {
-				getHttpServletResponse().getWriter().write(aString);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			ajaxDataList(new JsonUtils().toJson(dto));
 		}
 		return null;
 	}
@@ -110,19 +100,11 @@ public class RoleAction extends CommonAction {
 		if (StringUtils.isNotBlank(getId())) {
 			Map<String, Object> parameters = Maps.newHashMap();
 			parameters.put("id", getId());
-			AjaxObject ajaxObject = new AjaxObject();
 			try {
 				roleService.deleteUserRole(parameters);
-				ajaxObject.setSuccess(true);
-				ajaxObject.setMessage("删除成功");
+				ajaxSuccess("删除成功");
 			} catch (Exception e) {
-				ajaxObject.setSuccess(false);
-			}
-			try {
-				getHttpServletResponse().setContentType("text/json; charset=utf-8");
-				getHttpServletResponse().getWriter().write(ajaxObject.toJson());
-			} catch (IOException e) {
-				e.printStackTrace();
+				ajaxError("删除失败："+e.getMessage());
 			}
 		}
 		return null;
@@ -138,13 +120,7 @@ public class RoleAction extends CommonAction {
 			dto.setRecordsTotal(45);
 			dto.setRecordsFiltered(34);
 			dto.setData(users);
-			
-			String aString = new JsonUtils().toJson(dto);
-			try {
-				getHttpServletResponse().getWriter().write(aString);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			ajaxDataList(new JsonUtils().toJson(dto));
 		}
 		return null;
 	}
@@ -155,26 +131,26 @@ public class RoleAction extends CommonAction {
 			String[] userIds = getId().split(",");
 			String roleId = getHttpServletRequest().getParameter("roleId");
 			if (userIds.length > 0 && StringUtils.isNotBlank(roleId)) {
-				List<UserRole> userRoles = new ArrayList<UserRole>(userIds.length);
-				for (String userId : userIds) {
-					UserRole userRole = new UserRole();
-					userRole.setUserId(Long.valueOf(userId));
-					userRole.setRoleId(Long.valueOf(roleId));
-					userRoles.add(userRole);
+				try {
+					List<UserRole> userRoles = new ArrayList<UserRole>(userIds.length);
+					for (String userId : userIds) {
+						UserRole userRole = new UserRole();
+						userRole.setUserId(Long.valueOf(userId));
+						userRole.setRoleId(Long.valueOf(roleId));
+						userRoles.add(userRole);
+					}
+					Map<String, Object> parameters = new HashMap<String, Object>();
+					parameters.put("list", userRoles);
+					roleService.addUserRole(parameters);
+					ajaxSuccess("添加成功！");
+				} catch (Exception e) {
+					ajaxError("添加失败:"+e.getMessage());
 				}
-				Map<String, Object> parameters = new HashMap<String, Object>();
-				parameters.put("list", userRoles);
-				roleService.addUserRole(parameters);
+			} else {
+				ajaxError("提交的参数缺失！");
 			}
-			AjaxObject ajaxObject = new AjaxObject();
-			ajaxObject.setSuccess(true);
-			ajaxObject.setMessage("添加成功");
-			try {
-				getHttpServletResponse().setContentType("text/json; charset=utf-8");
-				getHttpServletResponse().getWriter().write(ajaxObject.toJson());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		} else {
+			ajaxError("提交的参数缺失！");
 		}
 		return null;
 	}

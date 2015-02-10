@@ -16,6 +16,7 @@
    <script type="text/javascript" src="../static/admin/js/colResizable-1.3.min.js"></script>
    <script type="text/javascript" src="../static/admin/js/common.js"></script>
    <script type="text/javascript" src="../static/admin/dataTables/js/jquery.dataTables.js"></script>
+   <script type="text/javascript" src="../static/admin/dataTables/js/jquery.dataTables.min.js"></script>
    
    <title>Document</title>
    <style type="text/css">
@@ -75,7 +76,7 @@
 	                <tr>
 	                  <td>角色名称</td>
 	                  <td><input type="text" name="searchRole.roleName" value="${searchRole.roleName}" class="input-text lh25" size="20"></td>
-	                  <td><input type="submit" name="button" class="btn btn82 btn_search" value="查询"> </td>
+	                  <td><input type="submit" class="btn btn82 btn_search"> </td>
 	                </tr>
 	              </table>
 	            </div>
@@ -114,7 +115,7 @@
 	        </div>
 	     </div>
      </form>
-      <div id="" class="mt5" >
+      <div id="" class="" >
       	 <table>
       	 	<tr>
       	 		<td width="40%">
@@ -122,9 +123,9 @@
 					       id="userRole_table">
 					    <thead>
 					    <tr>
-					        <th>xxxxx</th>
-					        <th>bbbbb</th>
-					        <th>操作</th>
+					        <th style="width:80px">xxxxx</th>
+					        <th style="width:80px">bbbbb</th>
+					        <th style="width:80px">操作</th>
 					    </tr>
 					    </thead>
 					    <tbody>
@@ -132,7 +133,7 @@
 					</table>
 
       	 		</td>
-      	 		<td width="30%"></td>
+      	 		<td width="20%"></td>
       	 		<td width="40%">
       	 			<table cellpadding="0" cellspacing="0" border="0" class="cell-border" 
 					       id="user_table">
@@ -298,7 +299,7 @@ function initRoleUser(roleId) {
         bInfo:false,//控制是否显示表格上的数据信息
         "bSort": false,
         "sScrollY": "300px",//是否开启垂直滚动
-        "sScrollX": "100%",
+        //"sScrollX": "100%",
         "bScrollCollapse": true,
         columns: [
                   {data:'roleName'},
@@ -335,7 +336,7 @@ function initUserTable(roleId) {
         bInfo:false,//控制是否显示表格上的数据信息
         "bSort": false,
         "sScrollY": "300px",//是否开启垂直滚动
-        "sScrollX": "100%",
+        //"sScrollX": "100%",
         "bScrollCollapse": true,
         columns: [
 				  {
@@ -387,7 +388,6 @@ function deleteUserRole(id) {
         type: "post",
         success: function (backdata) {
             if (backdata.success) {
-                //userRoleTable.fnReloadAjax(userRoleTable.fnSettings());
             	initRoleUser(searchRoleId);
             } else {
                 alert(backdata.message);
@@ -416,7 +416,7 @@ function addUserToRoleFun() {
                 success: function (backdata) {
                     if (backdata.success) {
                     	initRoleUser(searchRoleId);
-                    	initUserTable(searchRoleId);
+                    	//initUserTable(searchRoleId);
                     } else {
                         alert(backdata.message);
                     }

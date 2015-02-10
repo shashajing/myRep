@@ -12,9 +12,6 @@
 	<constant name="struts.objectFactory" value="spring"></constant>
 	
 	<package name="admin" namespace="/admin" extends="struts-default">
-		<result-types>
-            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
-        </result-types>
 		<action name="frame" class="frameAction">
 			<result name="success">/WEB-INF/views/frame/frame.jsp</result>
 			<result name="main">/WEB-INF/views/frame/main.jsp</result>
