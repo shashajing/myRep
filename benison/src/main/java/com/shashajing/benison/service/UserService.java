@@ -26,6 +26,10 @@ public class UserService {
 		return userDao.countUser(parameters);
 	}
 	
+	public List<User> searchUserNotBelongRole(Map<String, Object> parameters) {
+		return userDao.searchUser(parameters);
+	}
+	
 	public User searchUserById(String id) {
 		Map<String, Object> parameters = Maps.newHashMap();
 		parameters.put("userId", id);

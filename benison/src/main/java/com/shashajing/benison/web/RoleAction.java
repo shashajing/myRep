@@ -132,7 +132,7 @@ public class RoleAction extends CommonAction {
 		if (StringUtils.isNotBlank(getId())) {
 			Map<String, Object> parameters = Maps.newHashMap();
 			parameters.put("roleId", getId());
-			List<User> users = userService.searchUser(parameters);
+			List<User> users = userService.searchUserNotBelongRole(parameters);
 			AjaxDto<User> dto = new AjaxDto<User>();
 			dto.setDraw(1);
 			dto.setRecordsTotal(45);

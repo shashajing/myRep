@@ -43,8 +43,15 @@ public class RoleService {
 		return roleDao.updateRole(role);
 	}
 	
-	public int deleteRole(List<Long> ids) {
-		return roleDao.deleteRole(ids);
+	public void deleteRole(List<Long> ids) {
+		roleDao.deleteRole(ids);
+		Map<String, Object> parameters = Maps.newHashMap();
+		
+		for (Long roleId : ids) {
+			parameters.clear();
+			parameters.put("roleId", roleId);
+			roleDao.deleteUserRole(parameters);
+		}
 	}
 	
 	public int deleteUserRole(Map<String, Object> parameters) {

@@ -58,6 +58,11 @@
 		</where>
 	</select>
 	
+	<select id="searchUserNotBelongRole" parameterType="map" resultType="User">
+		select userId, loginName, loginPassword, userName, email, tel, status, type,editTime,editUserName
+		from user u where not exists (select 1 from userRole r where r.userId = u.userId and u.userId = #{roleId})
+	</select>
+	
 	<!-- 新增用户 -->
 	<insert id="addUser" parameterType="User">
 		insert into user
