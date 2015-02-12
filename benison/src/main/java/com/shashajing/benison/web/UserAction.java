@@ -16,7 +16,7 @@ import com.shashajing.benison.service.UserService;
 
 @Component("userAction")
 @Scope("prototype")
-public class UserAction extends CommonAction{
+public class UserAction extends CommonAction {
 	private static final long serialVersionUID = 3384495531777315088L;
 
 	private List<User> userList;

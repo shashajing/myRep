@@ -86,6 +86,7 @@
 	
 	<!-- 定义aspectj -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
-
+	
+	<import resource="classpath*:security/applicationContext-shiro.xml" />
 	
 </beans>

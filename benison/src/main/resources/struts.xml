@@ -15,6 +15,7 @@
 		<action name="frame" class="frameAction">
 			<result name="success">/WEB-INF/views/frame/frame.jsp</result>
 			<result name="main">/WEB-INF/views/frame/main.jsp</result>
+			<result name="manageLogin">/WEB-INF/views/frame/manageLogin.jsp</result>
 		</action>
 		<action name="user" class="userAction">
 			<result name="success">/WEB-INF/views/authority/userManage.jsp</result>
@@ -46,6 +47,13 @@
 		</action>
 		<action name="news" class="newsAction">
 			<result name="success">/WEB-INF/views/news/newsManage.jsp</result>
+		</action>
+		<action name="login" class="manageLoginAction">
+			<result name="toFrame" type="redirectAction">  
+                <param name="namespace">/admin</param>
+                <param name="actionName">frame</param>
+            </result>
+            <result name="success">/WEB-INF/views/frame/manageLogin.jsp</result>
 		</action>
 	</package>
 	
