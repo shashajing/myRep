@@ -17,6 +17,8 @@ public interface UserDao {
 	
 	int countUser(Map<String, Object> parameters);
 	
+	List<User> findUserAndRoleModule(Map<String, Object> parameters);
+	
 	int addUser(User user);
 	
 	int updateUser(User user);

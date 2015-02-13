@@ -22,13 +22,21 @@ public class User {
 	private Date editTime;
 	private String editUserName;
 	
-	private List<Role> roles; 
+	private List<Role> roles;
+	
+	private List<Module> modules;
 	
 	public List<Role> getRoles() {
 		return roles;
 	}
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+	public List<Module> getModules() {
+		return modules;
+	}
+	public void setModules(List<Module> modules) {
+		this.modules = modules;
 	}
 	public Long getUserId() {
 		return userId;

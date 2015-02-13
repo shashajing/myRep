@@ -63,6 +63,40 @@
 		from user u where not exists (select 1 from userRole r where r.userId = u.userId and u.userId = #{roleId})
 	</select>
 	
+	<resultMap type="User" id="userAndRoleModuleMap">
+		<id column="userId" property="userId" />
+		<result column="loginName" property="loginName" />
+		<result column="loginPassword" property="loginPassword" />
+		<result column="userName" property="userName" />
+		<result column="email" property="email" />
+		<result column="tel" property="tel" />
+		<result column="status" property="status" />
+		<result column="type" property="type" />
+		<result column="editTime" property="editTime" />
+		<result column="editUserName" property="editUserName" />
+		<collection property="roles" ofType="Role">
+			<id column="roleId" property="roleId" />
+			<result column="role_name" property="roleName" />
+			<result column="description" property="description" />
+		</collection>
+		<collection property="modules" ofType="Module">
+			<id column="moduleId" property="moduleId" />
+			<result column="parentId" property="parentId" />
+			<result column="type" property="type" />
+			<result column="module_name" property="moduleName" />
+			<result column="module_url" property="moduleUrl" />
+		</collection>
+	
+	</resultMap>
+	
+	<select id="findUserAndRoleModule" parameterType="map" resultMap="userAndRoleModuleMap">
+		
+		select u.userId, u.loginName, u.loginPassword, u.userName, u.email, u.tel, u.status, u.type, u.editTime, u.editUserName,
+			r.roleId, r.role_name, r.description, m.moduleId, m.parentId, m.type, m.module_name, m.module_url
+			from module m, moduleRole a,userRole c, user u,role r
+		where m.moduleId = a.moduleId and a.roleId = c.roleId and c.userId = u.userId and c.roleId = r.roleId and u.loginName = #{loginName}
+	</select>
+	
 	<!-- 新增用户 -->
 	<insert id="addUser" parameterType="User">
 		insert into user

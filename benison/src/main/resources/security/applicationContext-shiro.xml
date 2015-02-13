@@ -16,19 +16,32 @@
 		<property name="accountService" ref="accountService"/>
 	</bean>
 	
-	<!-- Shiro Filter -->
+	<!-- 自定义对 shiro的连接约束,结合shiroSecurityFilter实现动态获取资源 -->
+	<bean id="chainDefinitionSectionMetaSource" class="com.shashajing.benison.common.ChainDefinitionSectionMetaSource">
+	    <!-- 默认的连接配置 -->
+	    <property name="filterChainDefinitions">
+	        <value>
+			    /static/** = anon
+	        </value>
+	    </property>
+	</bean>
+
+	<!-- Shiro Filter 
+	 anon  无参,表示可匿名使用,可以理解为匿名用户或游客
+	 authc       无参,表示需认证才能使用
+	 authcBasic  无参,表示httpBasic认证
+	 user        无参,表示必须存在用户,当登入操作时不做检查
+	 ssl         无参,表示安全的URL请求,协议为https 
+	-->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/login" />
-		<property name="successUrl" value="/home.jsp"/> 
-		<property name="filterChainDefinitions">
-			<value>
-				/login = authc
-				/logout = logout
-				/account/** = user
-				/api/** = authcBasic
-			</value>
-		</property>
+		<property name="loginUrl" value="/admin/login.action" />
+		<!-- 登陆成功后要跳转的连接 -->
+		<property name="successUrl" value="/home.jsp"/>
+		<!-- 没有权限要跳转的链接 -->
+        <property name="unauthorizedUrl" value="/unauthorized" />
+        <!-- shiro连接约束配置,在这里使用自定义的动态获取资源类 -->
+   		<property name="filterChainDefinitionMap" ref="chainDefinitionSectionMetaSource" />
 	</bean>
 
 	<!-- 用户授权信息Cache, 采用EhCache -->

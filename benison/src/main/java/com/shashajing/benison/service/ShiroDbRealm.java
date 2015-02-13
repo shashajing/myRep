@@ -19,6 +19,8 @@
 package com.shashajing.benison.service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -33,6 +35,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Objects;
+import com.shashajing.benison.entity.Module;
 import com.shashajing.benison.entity.Role;
 import com.shashajing.benison.entity.User;
 
@@ -75,16 +78,21 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
-		User user = accountService.findUserByLoginName(shiroUser.loginName);
+		User user = accountService.findUserAndRoleModule(shiroUser.loginName);
 
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+		// 基于Role的权限信息
 		for (Role role : user.getRoles()) {
-			// 基于Role的权限信息
 			info.addRole(role.getRoleName());
-			// 基于Permission的权限信息
-			info.addStringPermissions(role.getModuleNames());
 		}
-		org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor aDefaultWebSecurityManager;
+		
+		// 基于Permission的权限信息
+		List<String> permissions = new ArrayList<String>();
+		for (Module module : user.getModules()) {
+			permissions.add(module.getModuleName());
+		}
+		info.addStringPermissions(permissions);
+		
 		//ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		return info;
 	}

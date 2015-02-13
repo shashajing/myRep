@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -50,6 +51,7 @@ public class RoleAction extends CommonAction {
 	}
 	
 	public String initInput() {
+		
 		if (StringUtils.isNotBlank(getId())) {
 			editRole = roleService.searchRoleById(getId());
 		}

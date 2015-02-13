@@ -42,6 +42,13 @@ public class AccountService {
 		return list.isEmpty()?null:list.get(0);
 	}
 	
+	public User findUserAndRoleModule(String loginName) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("loginName", loginName);
+		List<User> list = userDao.findUserAndRoleModule(parameters);
+		return list.isEmpty()?null:list.get(0);
+	}
+	
 	public List<User> searchUserNotBelongRole(Map<String, Object> parameters) {
 		return userDao.searchUser(parameters);
 	}
