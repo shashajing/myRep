@@ -22,6 +22,14 @@
 	    <property name="filterChainDefinitions">
 	        <value>
 			    /static/** = anon
+			    /homePage/** = anon
+			    /*.jsp = anon
+	        </value>
+	    </property>
+	    <!-- 全局的连接配置 -->
+	    <property name="globalDefinitions">
+	        <value>
+			    /*/** = authc
 	        </value>
 	    </property>
 	</bean>

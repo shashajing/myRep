@@ -17,6 +17,8 @@ public interface ModuleDao {
 	
 	int countModule(Map<String, Object> parameters);
 	
+	List<Module> findModuleAndRole(Map<String, Object> parameters);
+	
 	int addModule(Module module);
 	
 	int updateModule(Module module);

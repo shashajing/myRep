@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -79,19 +80,25 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
 		User user = accountService.findUserAndRoleModule(shiroUser.loginName);
-
+		if (null == user) {
+			return null;
+		}
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		// 基于Role的权限信息
-		for (Role role : user.getRoles()) {
-			info.addRole(role.getRoleName());
+		if (!CollectionUtils.isEmpty(user.getRoles())) {
+			for (Role role : user.getRoles()) {
+				info.addRole(role.getRoleName());
+			}
 		}
 		
 		// 基于Permission的权限信息
-		List<String> permissions = new ArrayList<String>();
-		for (Module module : user.getModules()) {
-			permissions.add(module.getModuleName());
+		if (!CollectionUtils.isEmpty(user.getModules())) {
+			List<String> permissions = new ArrayList<String>();
+			for (Module module : user.getModules()) {
+				permissions.add(module.getModuleName());
+			}
+			info.addStringPermissions(permissions);
 		}
-		info.addStringPermissions(permissions);
 		
 		//ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		return info;

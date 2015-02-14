@@ -21,7 +21,14 @@ public class Module {
 	private Date editTime;
 	private String parentModule;
 	private List<Module> sonModules;
+	private List<Role> roles;
 	
+	public List<Role> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
 	public Long getModuleId() {
 		return moduleId;
 	}

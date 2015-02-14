@@ -40,6 +40,33 @@
 		</where>
 	</select>
 	
+	
+	
+	<resultMap type="Module" id="moduleAndRoleMap">
+		<id column="moduleId" property="moduleId" />
+		<result column="type" property="type" />
+		<result column="module_name" property="moduleName" />
+		<result column="module_url" property="moduleUrl" />
+		<collection property="roles" ofType="Role">
+			<id column="roleId" property="roleId" />
+			<result column="role_name" property="roleName" />
+		</collection>
+	</resultMap>
+	
+	<!-- 查询菜单和菜单的所属的角色 -->
+	<select id="findModuleAndRole" parameterType="map" resultMap="moduleAndRoleMap">
+		select
+			t.moduleId,
+			t.type,
+			t.module_name,
+			t.module_url,
+			a.roleId,
+			a.role_name
+		from
+			module t left join (select m.moduleId,r.* from moduleRole m,role r where m.roleId = r.roleId) a on t.moduleId = a.moduleId
+        order by t.type desc
+	</select>
+	
 	<!-- 新增 -->
 	<insert id="addModule" parameterType="Module">
 		insert into module
