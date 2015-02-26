@@ -33,6 +33,10 @@ public class ModuleService {
 		return list.isEmpty()?null:list.get(0);
 	}
 
+	public List<Module> findModuleAndRole(Map<String, Object> parameters) {
+		return moduleDao.findModuleAndRole(parameters);
+	}
+	
 	public int addModule(Module Module) {
 		return moduleDao.addModule(Module);
 	}

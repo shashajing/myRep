@@ -23,7 +23,7 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 	//shiro默认的链接定义
     private String filterChainDefinitions;
     
-    //全局链接定义，反正最后面加载，以免覆盖局部定义
+    //全局链接定义，放在最后面加载，以免覆盖局部定义
     private String globalDefinitions;
     
     @Autowired
