@@ -17,6 +17,10 @@ public interface UserDao {
 	
 	int countUser(Map<String, Object> parameters);
 	
+	List<User> searchUserNotBelongRole(Map<String, Object> parameters);
+	
+	int countUserNotBelongRole(Map<String, Object> parameters);
+	
 	List<User> findUserAndRoleModule(Map<String, Object> parameters);
 	
 	int addUser(User user);

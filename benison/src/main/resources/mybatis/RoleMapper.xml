@@ -54,15 +54,11 @@
 	</insert>
 	
 	<!-- 新增菜单角色关系 -->
-	<insert id="addModuleRole" parameterType="list">
-		insert into moduleRole(roleId,moduleId)
-		select * from
-		(
-			<foreach item="item" collection="list" index="index"
-				separator="UNION ALL">
-				select #{roleId},#{moduleId} from dual
-			</foreach>
-		)
+	<insert id="addModuleRole" parameterType="map">
+		insert into moduleRole(roleId,moduleId) values
+		<foreach collection="list" item="item" index="index" separator="," > 
+          (#{item.roleId},#{item.moduleId}) 
+        </foreach> 
 	</insert>
 	
 	<!-- 删除用户角色关系 -->
@@ -78,11 +74,12 @@
 	
 	<!-- 删除菜单角色关系 -->
 	<delete id="deleteModuleRole" parameterType="map">
-		delete from userRole
+		delete from moduleRole
 		<where>
 			<if test="roleId != null">and roleId = #{roleId}</if>
 			<if test="moduleId != null">and moduleId = #{moduleId}</if>
-			<if test="roleId == null and moduleId == null">and 1 = 2</if>
+			<if test="id != null">and id = #{id}</if>
+			<if test="roleId == null and moduleId == null and id == null">and 1 = 2</if>
 		</where>
 	</delete>
 	<!-- 查询用户角色 -->
@@ -96,6 +93,21 @@
 			join user u on k.userId = u.userId
 		<where>
 			<if test="userName != null">u.userName like '%'||#{userName}||'%'</if>
+			<if test="roleId != null">and t.roleId = #{roleId}</if>
+		</where>
+	</select>
+	
+	<!-- 查询菜单角色 -->
+	<select id="moduleRoleSearch" parameterType="map" resultType="ModuleRole">
+		select
+			k.id,
+			t.role_name as roleName,
+			u.module_name as moduleName
+		from
+			role t join moduleRole k on t.roleId = k.roleId
+			join module u on k.moduleId = u.moduleId
+		<where>
+			<if test="moduleName != null">u.moduleName like '%'||#{moduleName}||'%'</if>
 			<if test="roleId != null">and t.roleId = #{roleId}</if>
 		</where>
 	</select>

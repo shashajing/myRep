@@ -71,7 +71,7 @@
 	                <tr>
 	                  <td>角色名称</td>
 	                  <td><input type="text" name="searchRole.roleName" value="${searchRole.roleName}" class="input-text lh25" size="20"></td>
-	                  <td><input type="submit" class="btn btn82 btn_search"> </td>
+	                  <td><input type="submit" class="btn btn82 btn_search" value="查询"></td>
 	                </tr>
 	              </table>
 	            </div>
@@ -102,7 +102,7 @@
 		                   		<a href="javascript:;" onclick="initEdit('${roleId}','edit');">编辑</a>
 		                   		<a href="javascript:;" onclick="initEdit('${roleId}','delete');">删除</a>
 		                   		<a href="javascript:;" onclick="showRoleUser('${roleId}');">角色用户</a>
-		                   		<a href="javascript:;" onclick="initEdit('${roleId}');">角色菜单</a>
+		                   		<a href="javascript:;" onclick="showRoleModule('${roleId}');">角色菜单</a>
 		                   </td> 
 		                </tr>
 	                </s:iterator>
@@ -144,16 +144,45 @@
       	 	</tr>
       	 </table>
 	   </div>
-	   <div id="moduleRoleDiv" class="" >3255</div>
-      
-	  
-     
+	   <div id="moduleRoleDiv" class="" >
+	   		<table width="100%">
+      	 	<tr>
+      	 		<td width="40%">
+					<table cellpadding="0" cellspacing="0" border="0" class="cell-border" id="moduleRole_table">
+					    <thead>
+					    <tr>
+					        <th style="width:80px">角色</th>
+					        <th style="width:80px">菜单</th>
+					        <th style="width:80px">操作</th>
+					    </tr>
+					    </thead>
+					    <tbody>
+					    </tbody>
+					</table>
+      	 		</td>
+      	 		<td width="5%"></td>
+      	 		<td width="55%">
+      	 			<table cellpadding="0" cellspacing="0" border="0" class="cell-border" id="module_table">
+					    <thead>
+						    <tr>
+						        <th width="15%"><input type="checkbox" id='moduleCheckAll'></th>
+						        <th width="35%">菜单</th>
+						        <th width="50%">描述</th>
+						    </tr>
+					    </thead>
+					    <tbody>
+					    </tbody>
+					</table>
+      	 		</td>
+      	 	</tr>
+      	 </table>
+	   </div>
      
    </div> 
  </body>
 <script type="text/javascript">
 
-var operateType = "${operateType}";
+var operateType = "${operateType}";//当前主页面操作类型
 $(function(){  
   $(".list_table").colResizable({
     liveDrag:true,
@@ -178,12 +207,20 @@ $(function(){
 	  }
   }
   
-  //checkbox全选
+  //用户checkbox全选
   $("#userCheckAll").live("click", function () {
       if ($(this).attr("checked") === "checked") {
           $("input[name='userCheckList']").attr("checked", $(this).attr("checked"));
       } else {
           $("input[name='userCheckList']").attr("checked", false);
+      }
+  });
+  //菜单checkbox全选
+  $("#moduleCheckAll").live("click", function () {
+      if ($(this).attr("checked") === "checked") {
+          $("input[name='moduleCheckList']").attr("checked", $(this).attr("checked"));
+      } else {
+          $("input[name='moduleCheckList']").attr("checked", false);
       }
   });
   
@@ -271,7 +308,7 @@ function initEdit(id,operateType){
 		}
 	}
 }
-//角色用户----------------------------------------
+//角色用户----------------------------------------------------------------------------------------------------------------------------------------
 var userRoleTable;
 var searchRoleId;
 var userTable;
@@ -293,7 +330,8 @@ function showRoleModule(roleId){
 	}
 	$("#userRoleDiv").hide();
 	$("#moduleRoleDiv").show();
-	
+	initRoleModule(roleId);
+	initModuleTable(roleId);
 }
 
 //初始化角色用户列表
@@ -327,11 +365,27 @@ function initRoleUser(roleId) {
                       }
                   }
 	 			  ],
-	 	"fnServerData":retrieveUserData, //与后台交互获取数据的处理函数 
+	 	"fnServerData":retrieveUserRoleData, //与后台交互获取数据的处理函数 
         "fnInitComplete": function (oSettings, json) {
         },
     } );
 }
+
+//函数的参数是固定，不能更改。  
+function retrieveUserRoleData(sSource, aoData, fnCallback ) {
+    //查询条件称加入参数数组     
+    $.ajax( {     
+        type: "POST",      
+        url: sSource,   
+        dataType:"json",  
+        data:"id="+searchRoleId, //以json格式传递(struts2后台还是以string类型接受),year和month直接作为参数传递。  
+        success: function(data) {   
+           $("#url_sortdata").val(data.data);  
+            fnCallback(data); //服务器端返回的对象的returnObject部分是要求的格式     
+        }     
+    });    
+}
+
 //初始化用户列表
 function initUserTable(roleId) {
 	if(!roleId || roleId == ''){
@@ -346,12 +400,30 @@ function initUserTable(roleId) {
         bPaginate: false,//开启分页功能，如果不开启，将会全部显示 
         bServerSide: true,
         bProcessing: true,//开启读取服务器数据时显示正在加载中
-        bFilter:false,//控制是否显示search框
-        bInfo:false,//控制是否显示表格上的数据信息
+        bFilter: false,//控制是否显示search框
+        //bInfo: false,//控制是否显示表格上的数据信息
+        bPaginate: true,//
+        bLengthChange: false,//用户不可改变每页显示数量
+        iDisplayLength: 3,//每页显示数据条数
+        sPaginationType: "full_numbers",//翻页界面类型 
         "bSort": false,
         "sScrollY": "300px",//是否开启垂直滚动
         //"sScrollX": "100%",
         "bScrollCollapse": true,
+        "oLanguage": {//汉化    
+     	               "sLengthMenu": "每页显示 _MENU_ 条记录",    
+     	               "sZeroRecords": "没有检索到数据",    
+     	               "sInfo": "当前数据为从第 _START_ 到第 _END_ 条数据；总共有 _TOTAL_ 条记录",    
+     	               "sInfoEmtpy": "没有数据",    
+                       "sProcessing": "正在加载数据...",    
+     	               "oPaginate": {    
+	     	               "sFirst": "首页",    
+	     	               "sPrevious": "前页",    
+	     	               "sNext": "后页",    
+	     	               "sLast": "尾页"   
+     	                }   
+        	          },   
+
         columns: [
 				  {
 				    "mDataProp": "userId",
@@ -361,7 +433,7 @@ function initUserTable(roleId) {
 				  },
                   {data:'userName'},
                   {data:'loginName'},
-                  {data:'tel'}
+                  {data:'tel',defaultContent:""}
 	 			  ],
 	 	"fnServerData":retrieveUserData, //与后台交互获取数据的处理函数 
 	 	"sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row-fluid'<'span6'i><'span6 'p>>",
@@ -370,18 +442,20 @@ function initUserTable(roleId) {
             $("#addUserToRole").click(addUserToRoleFun);
         }
         
-        
     } );
 }
 
 //函数的参数是固定，不能更改。  
 function retrieveUserData(sSource, aoData, fnCallback ) {
     //查询条件称加入参数数组     
+    aoData.push({ "name": "id", "value": searchRoleId} );
+    var postStr = $.param(aoData);
+
     $.ajax( {     
         type: "POST",      
         url: sSource,   
         dataType:"json",  
-        data:"id="+searchRoleId, //以json格式传递(struts2后台还是以string类型接受),year和month直接作为参数传递。  
+        data:postStr, //以json格式传递(struts2后台还是以string类型接受),year和month直接作为参数传递。  
         success: function(data) {   
            $("#url_sortdata").val(data.data);  
             fnCallback(data); //服务器端返回的对象的returnObject部分是要求的格式     
@@ -402,6 +476,7 @@ function deleteUserRole(id) {
         success: function (backdata) {
             if (backdata.success) {
             	initRoleUser(searchRoleId);
+            	initUserTable(searchRoleId);
             } else {
                 alert(backdata.message);
             }
@@ -411,6 +486,7 @@ function deleteUserRole(id) {
     });
 }
 
+//添加用户到当前角色
 function addUserToRoleFun() {
     var str = '';
     $("input[name='userCheckList']:checked").each(function (i, o) {
@@ -429,6 +505,7 @@ function addUserToRoleFun() {
                 success: function (backdata) {
                     if (backdata.success) {
                     	initRoleUser(searchRoleId);
+                    	initUserTable(searchRoleId);
                     } else {
                         alert(backdata.message);
                     }
@@ -442,8 +519,190 @@ function addUserToRoleFun() {
     }
 }
 
-//角色菜单----------------------------------------
+//角色菜单---------------------------------------------------------------------------------------------------------------------------------------------------------
+var moduleRoleTable;
+var moduleTable;
+var currentRoleId;
+//初始化角色菜单列表
+function initRoleModule(roleId) {
+	if(!roleId || roleId == ''){
+		return;
+	}
+	currentRoleId = roleId;
+	var moduleRoleUrl = "${ctx}/admin/role!moduleRoleSearch.action";
+	if(moduleRoleTable){
+		moduleRoleTable.fnDestroy(); 
+	}
+	moduleRoleTable = $('#moduleRole_table').dataTable({
+		sAjaxSource: moduleRoleUrl,
+        bPaginate: false,//开启分页功能，如果不开启，将会全部显示 
+        bServerSide: true,
+        bProcessing: true,//开启读取服务器数据时显示正在加载中
+        bFilter:false,//控制是否显示search框
+        bInfo:false,//控制是否显示表格上的数据信息
+        "bSort": false,
+        "sScrollY": "300px",//是否开启垂直滚动
+        "bScrollCollapse": true,
+        columns: [
+                  {data:'roleName'},
+                  {data:'moduleName'},
+                  {
+                      "mDataProp": "id",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<a href='javascript:void(0);' onclick='deleteModuleRole(" + sData + ")'>删除</a>");
+                      }
+                  }
+	 			  ],
+	 	"fnServerData":retrieveModuleRoleData, //与后台交互获取数据的处理函数 
+        "fnInitComplete": function (oSettings, json) {
+        },
+    } );
+}
 
+//后台请求处理函数
+function retrieveModuleRoleData(sSource, aoData, fnCallback ) {
+    //查询条件称加入参数数组     
+    $.ajax( {     
+        type: "POST",      
+        url: sSource,   
+        dataType:"json",  
+        data:"id="+currentRoleId,
+        success: function(data) {   
+           $("#url_sortdata").val(data.data);  
+            fnCallback(data); //服务器端返回的对象的returnObject部分是要求的格式     
+        }     
+    });    
+}
+
+//删除菜单角色
+function deleteModuleRole(id) {
+	if(!confirm("是否确定删除?")){
+		return;
+	}
+    $.ajax({
+        url: "${ctx}/admin/role!deleteModuleRole.action",
+        dataType:'json',
+        data: {"id": id},
+        type: "post",
+        success: function (backdata) {
+            if (backdata.success) {
+            	initRoleModule(currentRoleId);
+            } else {
+                alert(backdata.message);
+            }
+        }, error: function (error) {
+            console.log(error);
+        }
+    });
+}
+
+//初始化菜单列表
+function initModuleTable(roleId) {
+	if(!roleId || roleId == ''){
+		return;
+	}
+	var url = "${ctx}/admin/role!moduleSearch.action";
+	if(moduleTable){
+		moduleTable.fnDestroy(); 
+	}
+	moduleTable = $('#module_table').dataTable({
+		sAjaxSource: url,
+        bPaginate: false,//开启分页功能，如果不开启，将会全部显示 
+        bServerSide: true,
+        bProcessing: true,//开启读取服务器数据时显示正在加载中
+        bFilter: false,//控制是否显示search框
+        //bInfo: false,//控制是否显示表格上的数据信息
+        bPaginate: true,//
+        bLengthChange: false,//用户不可改变每页显示数量
+        iDisplayLength: 3,//每页显示数据条数
+        sPaginationType: "full_numbers",//翻页界面类型 
+        "bSort": false,
+        "sScrollY": "300px",//是否开启垂直滚动
+        "bScrollCollapse": true,
+        "oLanguage": {//汉化    
+     	               "sLengthMenu": "每页显示 _MENU_ 条记录",    
+     	               "sZeroRecords": "没有检索到数据",    
+     	               "sInfo": "当前数据为从第 _START_ 到第 _END_ 条数据；总共有 _TOTAL_ 条记录",    
+     	               "sInfoEmtpy": "没有数据",    
+                       "sProcessing": "正在加载数据...",    
+     	               "oPaginate": {    
+	     	               "sFirst": "首页",    
+	     	               "sPrevious": "前页",    
+	     	               "sNext": "后页",    
+	     	               "sLast": "尾页"   
+     	                }   
+        	          },   
+
+        columns: [
+				  {
+				    "mDataProp": "moduleId",
+				    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+				        $(nTd).html("<input type='checkbox' name='moduleCheckList' value='" + sData + "'/>");
+				    }
+				  },
+                  {data:'moduleName'},
+                  {data:'description',defaultContent:""}
+	 			  ],
+	 	"fnServerData":retrieveModuleData, //与后台交互获取数据的处理函数 
+	 	"sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row-fluid'<'span6'i><'span6 'p>>",
+        "fnInitComplete": function (oSettings, json) {
+            $('<a href="#" class="btn btn-danger" id="addModuleToRole">添加到当前角色</a>').appendTo($('.myBtnBox'));
+            $("#addModuleToRole").click(addModuleToRoleFun);
+        }
+        
+    } );
+}
+
+//函数的参数是固定，不能更改。  
+function retrieveModuleData(sSource, aoData, fnCallback ) {
+    //查询条件称加入参数数组     
+    aoData.push({ "name": "id", "value": currentRoleId} );
+    var postStr = $.param(aoData);
+
+    $.ajax( {     
+        type: "POST",      
+        url: sSource,   
+        dataType:"json",  
+        data:postStr, //以json格式传递(struts2后台还是以string类型接受),year和month直接作为参数传递。  
+        success: function(data) {   
+           $("#url_sortdata").val(data.data);  
+            fnCallback(data); //服务器端返回的对象的returnObject部分是要求的格式     
+        }     
+    });    
+} 
+
+//添加用户到当前角色
+function addModuleToRoleFun() {
+    var str = '';
+    $("input[name='moduleCheckList']:checked").each(function (i, o) {
+        str += $(this).val();
+        str += ",";
+    });
+    if (str.length > 0) {
+        var ids = str.substr(0, str.length - 1);
+        
+        if(confirm("是否确定将这些菜单添加到当前角色?")){
+        	$.ajax({
+                url: "${ctx}/admin/role!addModuleRole.action",
+                dataType:'json',
+                data: {"id": ids,"roleId":currentRoleId},
+                type: "post",
+                success: function (backdata) {
+                    if (backdata.success) {
+                    	initRoleModule(currentRoleId);
+                    	initModuleTable(currentRoleId);
+                    } else {
+                        alert(backdata.message);
+                    }
+                }, error: function (error) {
+                    console.log(error);
+                }
+            });
+    	}
+    } else {
+        alert("至少选择一个用户!");
+    }
+}
 
 
 </script>

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Maps;
 import com.shashajing.benison.dao.RoleDao;
+import com.shashajing.benison.entity.ModuleRole;
 import com.shashajing.benison.entity.Role;
 import com.shashajing.benison.entity.UserRole;
 
@@ -34,6 +35,10 @@ public class RoleService {
 		return roleDao.userRoleSearch(parameters);
 	}
 
+	public List<ModuleRole> moduleRoleSearch(Map<String, Object> parameters) {
+		return roleDao.moduleRoleSearch(parameters);
+	}
+	
 	public int addRole(Role role) {
 		return roleDao.addRole(role);
 	}
@@ -57,7 +62,16 @@ public class RoleService {
 	public int deleteUserRole(Map<String, Object> parameters) {
 		return roleDao.deleteUserRole(parameters);
 	}
+	
+	public int deleteModuleRole(Map<String, Object> parameters) {
+		return roleDao.deleteModuleRole(parameters);
+	}
+	
 	public int addUserRole(Map<String, Object> parameters) {
 		return roleDao.addUserRole(parameters);
+	}
+	
+	public int addModuleRole(Map<String, Object> parameters) {
+		return roleDao.addModuleRole(parameters);
 	}
 }

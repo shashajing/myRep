@@ -67,6 +67,19 @@
         order by t.type desc
 	</select>
 	
+	<select id="searchModuleNotBelongRole" parameterType="map" resultType="Module">
+		select moduleId, module_name as moduleName, description
+		from module u where not exists (select 1 from moduleRole r where r.moduleId = u.moduleId and r.roleId = #{roleId})
+		<if test="start != null and pageNum != null">
+			 LIMIT #{start},#{pageNum};
+	    </if>
+	</select>
+	
+	<select id="countModuleNotBelongRole" parameterType="map" resultType="int">
+		select count(1)
+		from module u where not exists (select 1 from moduleRole r where r.moduleId = u.moduleId and r.roleId = #{roleId})
+	</select>
+	
 	<!-- 新增 -->
 	<insert id="addModule" parameterType="Module">
 		insert into module

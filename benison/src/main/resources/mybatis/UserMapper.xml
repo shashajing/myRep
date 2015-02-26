@@ -60,9 +60,16 @@
 	
 	<select id="searchUserNotBelongRole" parameterType="map" resultType="User">
 		select userId, loginName, loginPassword, userName, email, tel, status, type,editTime,editUserName
-		from user u where not exists (select 1 from userRole r where r.userId = u.userId and u.userId = #{roleId})
+		from user u where not exists (select 1 from userRole r where r.userId = u.userId and r.roleId = #{roleId})
+		<if test="start != null and pageNum != null">
+			 LIMIT #{start},#{pageNum};
+	    </if>
 	</select>
 	
+	<select id="countUserNotBelongRole" parameterType="map" resultType="int">
+		select count(1)
+		from user u where not exists (select 1 from userRole r where r.userId = u.userId and r.roleId = #{roleId})
+	</select>
 	<resultMap type="User" id="userAndRoleModuleMap">
 		<id column="userId" property="userId" />
 		<result column="loginName" property="loginName" />

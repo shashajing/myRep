@@ -27,7 +27,11 @@ public class UserService {
 	}
 	
 	public List<User> searchUserNotBelongRole(Map<String, Object> parameters) {
-		return userDao.searchUser(parameters);
+		return userDao.searchUserNotBelongRole(parameters);
+	}
+	
+	public int countUserNotBelongRole(Map<String, Object> parameters) {
+		return userDao.countUserNotBelongRole(parameters);
 	}
 	
 	public User searchUserById(String id) {

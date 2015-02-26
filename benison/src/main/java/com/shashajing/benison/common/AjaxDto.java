@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class AjaxDto<T> {
 	private long draw;//
+	private long sEcho;//
 	private long recordsTotal;//
 	private long recordsFiltered;//
 	
@@ -43,5 +44,12 @@ public class AjaxDto<T> {
 	public void setData(List<T> data) {
 		this.data = data;
 	}
-	
+
+	public long getsEcho() {
+		return sEcho;
+	}
+
+	public void setsEcho(long sEcho) {
+		this.sEcho = sEcho;
+	}
 }
