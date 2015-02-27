@@ -104,11 +104,13 @@
 		<level value="info" />
 		<appender-ref ref="FILTER" />
 	</logger>
+	<logger name="xxxx" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="STDOUT" />
+	</logger>
 	<!-- Root logger的定义-->
 	<root>
-		<level value="DEBUG" />
-		<appender-ref ref="PROJECT" />
-		<!--appender-ref ref="PROJECT-DEBUG" /--> 
+		<level value="debug" />
 		<appender-ref ref="STDOUT"/>
 	</root>
 </log4j:configuration>
