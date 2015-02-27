@@ -696,7 +696,7 @@ function addModuleToRoleFun() {
                     }
                 }, error: function (error) {
                     console.log(error);
-                }
+                } 
             });
     	}
     } else {
