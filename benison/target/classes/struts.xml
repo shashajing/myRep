@@ -15,18 +15,45 @@
 		<action name="frame" class="frameAction">
 			<result name="success">/WEB-INF/views/frame/frame.jsp</result>
 			<result name="main">/WEB-INF/views/frame/main.jsp</result>
+			<result name="manageLogin">/WEB-INF/views/frame/manageLogin.jsp</result>
 		</action>
 		<action name="user" class="userAction">
 			<result name="success">/WEB-INF/views/authority/userManage.jsp</result>
-			<result name="input">/WEB-INF/views/authority/userEdit.jsp</result>
 			<result name="toUserList" type="redirectAction">  
                 <param name="actionName">user</param>  
                 <param name="namespace">/admin</param>  
                 <param name="operateType">search</param>  
             </result>
 		</action>
+		<action name="module" class="moduleAction">
+			<result name="success">/WEB-INF/views/authority/moduleManage.jsp</result>
+			<result name="toModuleList" type="redirectAction">  
+                <param name="actionName">module</param>  
+                <param name="namespace">/admin</param>  
+                <param name="operateType">search</param>  
+            </result>
+		</action>
+		<action name="role" class="roleAction">
+			<result name="success">/WEB-INF/views/authority/roleManage.jsp</result>
+			<result name="input">/WEB-INF/views/authority/roleManage.jsp</result>
+			<result name="toRoleList" type="redirectAction">  
+                <param name="actionName">role</param>
+                <param name="namespace">/admin</param>  
+                <param name="operateType">search</param>  
+            </result>
+		</action>
+		<action name="userRoleSearch" class="roleAction" method="userRoleSearch">
+			<result name="success">/WEB-INF/views/authority/roleManage.jsp</result>
+		</action>
 		<action name="news" class="newsAction">
 			<result name="success">/WEB-INF/views/news/newsManage.jsp</result>
+		</action>
+		<action name="login" class="manageLoginAction">
+			<result name="toFrame" type="redirectAction">  
+                <param name="namespace">/admin</param>
+                <param name="actionName">frame</param>
+            </result>
+            <result name="success">/WEB-INF/views/frame/manageLogin.jsp</result>
 		</action>
 	</package>
 	
