@@ -87,6 +87,12 @@
 	<!-- 定义aspectj -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 	
+	<!-- ehcache -->
+	<bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath*:cache/ehcache.xml" />
+	</bean>
+	
+	
 	<import resource="classpath*:security/applicationContext-shiro.xml" />
 	
 </beans>
