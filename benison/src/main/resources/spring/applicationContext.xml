@@ -89,10 +89,13 @@
 	
 	<!-- ehcache -->
 	<bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation" value="classpath*:cache/ehcache.xml" />
+		<property name="configLocation" value="classpath:/cache/ehcache.xml" />
 	</bean>
 	
+	<import resource="classpath*:/security/applicationContext-shiro.xml" />
 	
-	<import resource="classpath*:security/applicationContext-shiro.xml" />
+	<!-- 
+	同名资源存在时，classpath: 只从第一个符合条件的classpath中加载资源，而classpath*: 会从所有的classpath中加载符合条件的资源
 	
+	 -->
 </beans>

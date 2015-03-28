@@ -71,6 +71,21 @@
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
 	
+	<!-- ehcache缓存、gzip压缩核心过滤器 -->
+	<filter>
+	    <filter-name>pageCachingFilter</filter-name>
+	    <filter-class>com.shashajing.benison.filter.PageCachingFilter</filter-class>
+	    <init-param>
+	    	<param-name>cacheName</param-name>
+	    	<param-value>pageCachingFilter</param-value>
+	    </init-param>
+	</filter>
+	<filter-mapping>
+	    <filter-name>pageCachingFilter</filter-name>
+	    <url-pattern>homePage/home.action</url-pattern>
+	</filter-mapping>
+	
+	
 	<!-- struts2 -->
 	<filter>
         <filter-name>struts2</filter-name>

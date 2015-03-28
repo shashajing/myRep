@@ -87,6 +87,15 @@
 	<!-- 定义aspectj -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 	
-	<import resource="classpath*:security/applicationContext-shiro.xml" />
+	<!-- ehcache -->
+	<bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:/cache/ehcache.xml" />
+	</bean>
 	
+	<import resource="classpath*:/security/applicationContext-shiro.xml" />
+	
+	<!-- 
+	同名资源存在时，classpath: 只从第一个符合条件的classpath中加载资源，而classpath*: 会从所有的classpath中加载符合条件的资源
+	
+	 -->
 </beans>
