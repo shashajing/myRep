@@ -71,7 +71,7 @@
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
 	
-	<!-- ehcache缓存、gzip压缩核心过滤器 -->
+	<!-- ehcache缓存、gzip压缩核心过滤器  如果不配置cacheName 则默认是名称是：SimplePageCachingFilter -->
 	<filter>
 	    <filter-name>pageCachingFilter</filter-name>
 	    <filter-class>com.shashajing.benison.filter.PageCachingFilter</filter-class>
