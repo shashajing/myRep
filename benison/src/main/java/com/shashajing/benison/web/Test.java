@@ -1,16 +1,30 @@
 package com.shashajing.benison.web;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilterReader;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PushbackReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
+import org.apache.cxf.databinding.DataReader;
 
-import com.shashajing.benison.entity.UserRole;
+import com.sun.corba.se.impl.ior.ByteBuffer;
 
 public class Test extends HttpServlet {
 
@@ -57,5 +71,39 @@ public class Test extends HttpServlet {
             throws ServletException, IOException {
         doGet(request, response);
     }
-
+    
+    public String nameLocal;
+    
+    public String getName(){
+    	return nameLocal;
+    }
+    public void setName(String name){
+    	nameLocal = name;
+    }
+    
+    public static void main(String[] aStrings){
+    	try {
+           /* Jedis jedis = new Jedis("121.41.41.5");
+            long a = new Date().getTime();
+            
+            for (int i = 0; i < 1000; i++) {
+            	jedis.set("money", "wen"+i);
+			}
+            System.out.println((new Date().getTime() - a)/1000);*/
+    		
+//    		FileInputStream inputStream = new FileInputStream("D:\\csw.log");
+//    		OutputStream out = new FileOutputStream("D:\\asw.log");
+    		
+    		System.out.println((14.26-10.186)*5500 + 56000);
+    		
+    		
+    		
+    		
+       } catch (Exception e) {
+    	   e.printStackTrace();
+       }
+       finally{
+       }
+   }
+    	
 }

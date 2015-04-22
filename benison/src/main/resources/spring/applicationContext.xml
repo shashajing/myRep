@@ -42,8 +42,9 @@
 		<property name="locations">
 			<list>
 				<!-- 开发配置 -->
-				<value>classpath*:system-db.properties</value>
-				<value>classpath*:system.properties</value>
+				<value>classpath:system-db.properties</value>
+				<value>classpath:system.properties</value>
+				<value>classpath:redis.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -93,6 +94,7 @@
 	</bean>
 	
 	<import resource="classpath*:/security/applicationContext-shiro.xml" />
+	<import resource="classpath:/spring/applicationContext-*.xml" />
 	
 	<!-- 
 	同名资源存在时，classpath: 只从第一个符合条件的classpath中加载资源，而classpath*: 会从所有的classpath中加载符合条件的资源

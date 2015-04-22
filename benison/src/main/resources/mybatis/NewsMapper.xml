@@ -18,6 +18,24 @@
 			<if test="title != null">
 				and title = #{title}
 			</if>
+			<if test="start != null and pageNum != null">
+			 	LIMIT #{start},#{pageNum};
+	    	</if>
+		</where>
+	</select>
+	<select id="countNews" parameterType="map" resultType="int">
+		select count(1)
+		from news
+		<where>
+			<if test="newsId != null">
+				newsId = #{newsId}
+			</if>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			<if test="title != null">
+				and title = #{title}
+			</if>
 		</where>
 	</select>
 
@@ -35,6 +53,7 @@
 		update news
 		<set>
 			<if test="type != null">type=#{type},</if>
+			<if test="title != null">title=#{title},</if>
 			<if test="content != null">content=#{content},</if>
 			<if test="url != null">url=#{url},</if>
 			<if test="modifyTime != null">modifyTime=#{modifyTime},</if>
