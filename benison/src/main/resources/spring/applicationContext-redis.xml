@@ -26,8 +26,8 @@
 		<property name="poolConfig" ref="jedisPoolConfig" />
 	</bean>
 	
-	    <bean class="org.springframework.data.redis.core.RedisTemplate"  
-            p:connection-factory-ref="jedisConnectionFactory" />  
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"  
+           p:connection-factory-ref="jedisConnectionFactory" />  
 	<!-- 
 	同名资源存在时，classpath: 只从第一个符合条件的classpath中加载资源，而classpath*: 会从所有的classpath中加载符合条件的资源
 	
