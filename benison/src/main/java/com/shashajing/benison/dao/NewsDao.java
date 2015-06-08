@@ -15,6 +15,8 @@ public interface NewsDao {
 
 	List<News> searchNews(Map<String, Object> parameters);
 	
+	int countNews(Map<String, Object> parameters);
+	
 	long addNews(News news);
 	
 	long updateNews(News news);

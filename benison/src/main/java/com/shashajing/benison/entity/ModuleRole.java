@@ -11,6 +11,8 @@ public class ModuleRole {
 	private Long id;
 	private Long roleId;
 	private Long moduleId;
+	private String roleName;
+	private String moduleName;
 	
 	public Long getId() {
 		return id;
@@ -29,5 +31,17 @@ public class ModuleRole {
 	}
 	public void setModuleId(Long moduleId) {
 		this.moduleId = moduleId;
+	}
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+	public String getModuleName() {
+		return moduleName;
+	}
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
 	}
 }

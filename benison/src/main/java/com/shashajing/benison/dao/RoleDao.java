@@ -19,11 +19,13 @@ public interface RoleDao {
 	
 	List<UserRole> userRoleSearch(Map<String, Object> parameters);
 	
+	List<ModuleRole> moduleRoleSearch(Map<String, Object> parameters);
+	
 	int addRole(Role role);
 	
 	int addUserRole(Map<String, Object> parameters);
 	
-	int addModuleRole(List<ModuleRole> moduleRoles);
+	int addModuleRole(Map<String, Object> parameters);
 	
 	int updateRole(Role role);
 	

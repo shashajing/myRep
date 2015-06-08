@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -16,7 +20,7 @@ import com.shashajing.benison.service.UserService;
 
 @Component("userAction")
 @Scope("prototype")
-public class UserAction extends CommonAction{
+public class UserAction extends CommonAction {
 	private static final long serialVersionUID = 3384495531777315088L;
 
 	private List<User> userList;
@@ -26,6 +30,11 @@ public class UserAction extends CommonAction{
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	CacheManager ehCacheManager;
+	
+	private static final String EH_CACHE_NAME = "ehCache";
 	
 	@Override
 	public String execute() throws Exception {
@@ -47,9 +56,46 @@ public class UserAction extends CommonAction{
 	
 	public String initInput() {
 		if (StringUtils.isNotBlank(getId())) {
-			editUser = userService.searchUserById(getId());
+			editUser = getCacheUser(getId());
+			if (null == editUser) {
+				editUser = userService.searchUserById(getId());
+				setCacheUser(editUser);
+			}
+			
 		}
 		return "success";
+	}
+	
+	private void setCacheUser(User user) {
+		if (null == user) {
+			return;
+		}
+		if (null == ehCacheManager) {
+			return;
+		}
+		Cache cache = ehCacheManager.getCache(EH_CACHE_NAME);
+		if (null == cache || cache.isDisabled()) {
+			return;
+		}
+		cache.put(new Element(user.getUserId(), user));
+	}
+
+	private User getCacheUser(String id){
+		if (StringUtils.isBlank(id)) {
+			return null;
+		}
+		if (null == ehCacheManager) {
+			return null;
+		}
+		Cache cache = ehCacheManager.getCache(EH_CACHE_NAME);
+		if (null == cache || cache.isDisabled()) {
+			return null;
+		}
+		Element element = cache.get(id);
+		if (null == element) {
+			return null;
+		}
+		return (User)element.getObjectValue();
 	}
 	
 	public String editUser() {
