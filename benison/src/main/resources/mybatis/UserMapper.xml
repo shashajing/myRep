@@ -29,7 +29,7 @@
 			</if>
 		</where>
 		<if test="start != null and pageNum != null">
-			 LIMIT #{start},#{pageNum};
+			 LIMIT #{start},#{pageNum}
 	    </if>
 	</select>
 	
